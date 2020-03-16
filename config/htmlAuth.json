@@ -1,0 +1,87 @@
+{
+    "BackendLogin":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },
+    "ChangePasswordForm":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/changepassword.html"
+    },
+    "PasswordUpdate":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },
+    "HistoryRecordSearch":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/HistoryRecordSearch.html"
+    },
+    "HistoryRecordSearch_Transfer":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },
+    "AuthGroup":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/AuthGroup.html"
+    },        
+    "UploadImg_Transfer":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },        
+    "Account_Transfer":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },    
+    "AuthAdd":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/AuthAdd.html"
+    },
+    "AuthList":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/AuthList.html"
+    },
+    "AuthEdit":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/AuthEdit.html"
+    },
+    "PhotoView":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/PhotoView.html"
+    },
+    "Auth_Transfer":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    }    
+}

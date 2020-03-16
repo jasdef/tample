@@ -1,0 +1,30 @@
+{
+    "人員管理":
+    {
+        "autho": "admin",
+        "enable": true,
+        "child":
+        {
+            "人員列表":
+            {
+                "enable": true,
+                "autho": "admin",
+                "href": "AuthList"
+            } 
+        }
+    },
+    "報表系統":
+    {
+        "autho": "admin",
+        "enable": true,
+        "child":
+        {
+            "操作歷史紀錄":
+            {
+                "enable": true,
+                "autho": "admin",
+                "href": "HistoryRecordSearch"
+            }
+        }
+    }  
+}

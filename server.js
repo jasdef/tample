@@ -17,6 +17,7 @@ var historyRecord = require('./js/historyRecordSearch');
 var listenPort = 8888;
 var key = fs.readFileSync('certificate/ca.key', 'utf8');
 var cert = fs.readFileSync('certificate/ca.crt', 'utf8');
+var LunarCalendar = require("lunar-calendar");
 
 var options = {
     key: key,
@@ -54,6 +55,8 @@ app.get('/*', function (req, res) {
 });
 
 https.createServer(options, app).listen(listenPort,'0.0.0.0', function () {
+    console.log(LunarCalendar.calendar(2006,5));
+
     console.log("Express server listening on port " + listenPort);
     fs.readFile(__dirname + '/package.json', 'utf8', function (err, data) {
         console.log("version: " + JSON.parse(data).version);

@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `behavior_log`;
 CREATE TABLE `behavior_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) DEFAULT NULL,
-  `operator` varchar(45) DEFAULT NULL,
+  `operator` varchar(255) DEFAULT NULL,
   `modifytime` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2675 DEFAULT CHARSET=latin1;

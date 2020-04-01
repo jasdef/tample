@@ -97,6 +97,33 @@
         "enable": true,
         "type": "view",
         "htmlpath": "./../public/FamilyEdit.html"
+    },        
+    "Light_Transfer":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },    
+    "LightAdd":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightAdd.html"
+    },
+    "LightList":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightList.html"
+    },
+    "LightEdit":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightEdit.html"
     },
     "PhotoView":
     {

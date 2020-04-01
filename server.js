@@ -12,7 +12,8 @@ common = require("./js/common");
 var loginform = require('./js/login');
 var account = require('./js/account');
 var imgUpload = require('./js/uploadImg');
-
+var light = require('./js/light');
+var family = require('./js/family');
 var historyRecord = require('./js/historyRecordSearch');
 var listenPort = 8888;
 var key = fs.readFileSync('certificate/ca.key', 'utf8');
@@ -39,7 +40,8 @@ app.use(session({
 app.use(account);
 app.use(imgUpload);
 app.use(loginform);
-
+app.use(light);
+app.use(family);
 app.use(historyRecord);
 
 app.get('/', function (req, res) {

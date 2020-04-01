@@ -13,6 +13,34 @@
             } 
         }
     },
+    "點燈系統":
+    {
+        "autho": "admin",
+        "enable": true,
+        "child":
+        {
+            "點燈列表":
+            {
+                "enable": true,
+                "autho": "admin",
+                "href": "LightList"
+            } 
+        }
+    },
+    "信徒管理":
+    {
+        "autho": "admin",
+        "enable": true,
+        "child":
+        {
+            "信徒列表":
+            {
+                "enable": true,
+                "autho": "admin",
+                "href": "FamilyList"
+            } 
+        }
+    },
     "報表系統":
     {
         "autho": "admin",

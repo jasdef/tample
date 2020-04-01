@@ -70,6 +70,33 @@
         "enable": true,
         "type": "view",
         "htmlpath": "./../public/AuthEdit.html"
+    },        
+    "Family_Transfer":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "protocol"
+    },    
+    "FamilyAdd":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/FamilyAdd.html"
+    },
+    "FamilyList":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/FamilyList.html"
+    },
+    "FamilyEdit":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/FamilyEdit.html"
     },
     "PhotoView":
     {

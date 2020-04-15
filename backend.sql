@@ -56,18 +56,9 @@ CREATE TABLE `behavior_log` (
   `operator` varchar(255) DEFAULT NULL,
   `modifytime` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2702 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2707 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `behavior_log`
---
-
-LOCK TABLES `behavior_log` WRITE;
-/*!40000 ALTER TABLE `behavior_log` DISABLE KEYS */;
-INSERT INTO `behavior_log` VALUES (2675,1,'\"call AuthList\"','2020-04-04 20:54:29'),(2676,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-04 20:54:29'),(2677,1,'\"call LightList\"','2020-04-04 20:54:32'),(2678,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-04 20:54:32'),(2679,1,'\"call LightAdd\"','2020-04-04 20:54:35'),(2680,1,'\"call AuthList\"','2020-04-05 09:51:32'),(2681,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-05 09:51:32'),(2682,1,'\"call AuthAdd\"','2020-04-05 09:51:39'),(2683,1,'\"call LightList\"','2020-04-05 09:52:02'),(2684,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-05 09:52:03'),(2685,1,'\"call FamilyList\"','2020-04-05 09:52:22'),(2686,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-05 09:52:23'),(2687,1,'\"call FamilyAdd\"','2020-04-05 09:53:15'),(2688,1,'\"call FamilyList\"','2020-04-05 09:56:33'),(2689,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-05 09:56:33'),(2690,1,'\"call AuthEdit\"','2020-04-05 09:56:42'),(2691,1,'\"select * from account where id=1;\"','2020-04-05 09:56:42'),(2692,1,'\"call LightList\"','2020-04-05 09:56:46'),(2693,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-05 09:56:46'),(2694,1,'\"call LightAdd\"','2020-04-05 09:56:49'),(2695,1,'\"call AuthList\"','2020-04-15 11:16:23'),(2696,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-15 11:16:24'),(2697,1,'\"call LightList\"','2020-04-15 11:18:19'),(2698,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-15 11:18:20'),(2699,1,'\"call LightAdd\"','2020-04-15 11:18:21'),(2700,1,'\"call LightList\"','2020-04-15 11:20:29'),(2701,1,'\"select COUNT(*) as count from account;select * from account;\"','2020-04-15 11:20:29');
-/*!40000 ALTER TABLE `behavior_log` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `family`
@@ -80,8 +71,8 @@ CREATE TABLE `family` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tel` varchar(150) DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `address` text DEFAULT NULL,
-  `delegate` varchar(255) DEFAULT NULL,
+  `address` text CHARACTER SET utf8 DEFAULT NULL,
+  `delegate` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -108,7 +99,7 @@ CREATE TABLE `light_record` (
   `light_id` int(11) DEFAULT NULL,
   `date` timestamp NULL DEFAULT current_timestamp(),
   `price` int(11) DEFAULT NULL,
-  `note` text DEFAULT NULL,
+  `note` text CHARACTER SET utf8 DEFAULT NULL,
   `family_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -132,7 +123,7 @@ DROP TABLE IF EXISTS `light_type`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `light_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `price` int(11) DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -156,12 +147,12 @@ DROP TABLE IF EXISTS `member`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `member` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) DEFAULT NULL,
-  `birthday_1` varchar(150) DEFAULT NULL,
-  `birthday_2` varchar(150) DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `birthday_1` varchar(150) CHARACTER SET utf8 DEFAULT NULL,
+  `birthday_2` varchar(150) CHARACTER SET utf8 DEFAULT NULL,
   `sex` int(11) DEFAULT NULL,
-  `zodiac` varchar(45) DEFAULT NULL,
-  `gan_year` varchar(45) DEFAULT NULL,
+  `zodiac` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
+  `gan_year` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   `family_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -185,4 +176,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-15 13:47:30
+-- Dump completed on 2020-04-15 15:01:56

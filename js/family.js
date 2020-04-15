@@ -23,22 +23,41 @@ router.get('/FamilyEdit', function (req, res) {
 
 router.post('/AddFamily', function (req, res) {
     common.CreateHtml("Family_Transfer", req, res, function (err) {
-        var hash = crypto.createHash('sha512');
-        var pass = hash.update(req.body.password + salt).digest('hex');
-        var tempForm = req.body;
         common.BackendConnection(res, function (err, connection) {
-            var sql = "INSERT INTO account (account,password,name,Familyo,lock_status) VALUES (?,?,?,?,'N')";
-            sql = connection.format(sql, [tempForm.Account, pass, tempForm.name, tempForm.FamilyGroup]);
+            var sql = "INSERT INTO family (tel, phone, address, delegate) VALUES (?,?,?,?)";
+            var requestData = JSON.parse(req.body.requestData);
+            sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate]);
+            sql += "; select LAST_INSERT_ID() as id;"
             common.log(req.session['account'], sql);
-            connection.query(sql, function (err, dbresults, fields) {
-                if (err) {
-                    throw err;
-                    res.send({ code: "-1", msg: "失敗" });
-                } else {
-                    res.send({ code: "0", msg: "成功", data: dbresults });
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], error);
+                    connection.release();                    
+                    res.send({ code: -1, msg: "新增信徒戶口失敗", err: error }).end();
                 }
-                connection.release();
-                res.end();
+                else {
+                    
+                    var members = requestData.members;
+                    var id = result[1].id;
+                    sql = '';
+                    
+                    for (var i = 0; i < members.length; i++) {
+                        var temp = 'insert into member (name, birthday_1, birthday_2, sex, zodiac, gan_year, family_id) values (?,?,?,?,?,?,?);';
+                        sql += connection.format(sql, [members[i].name, members[i].birthday_1, members[i].birthday_2, members[i].sex, members[i].zodiac, members[i].gan, id]);                        
+                    }
+
+                    connection.query(sql, function(e, r, f) {
+                        if (e) {
+                            common.log(req.session['account'], error);
+                            connection.release();                    
+                            res.send({ code: -1, msg: "新增信徒資料失敗", err: error }).end();
+                        }
+                        else {
+                            connection.release();                    
+                            res.send({ code: 0, msg: "新增成功!" }).end();
+                        }
+                    });
+                }
             });
         });
     });

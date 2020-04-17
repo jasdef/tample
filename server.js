@@ -57,7 +57,7 @@ app.get('/*', function (req, res) {
 });
 
 https.createServer(options, app).listen(listenPort,'0.0.0.0', function () {
-    console.log(LunarCalendar.calendar(2006,5));
+
 
     console.log("Express server listening on port " + listenPort);
     fs.readFile(__dirname + '/package.json', 'utf8', function (err, data) {

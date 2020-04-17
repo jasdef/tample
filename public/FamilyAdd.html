@@ -31,8 +31,7 @@
     <!-- At.js 套件(autocomplete))  -->
     <link href="../vendors/At.js/css/jquery.atwho.min.css" rel="stylesheet">
     <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/accountiing/accounting.js"></script>
-
+    <script type="text/javascript" src="../vendors/lunar-calendar/lib/LunarCalendar.min.js"></script>
 
     <style type="text/css" media="screen">
     #datatable tbody td {
@@ -51,13 +50,14 @@
     </style>
 </head>
 <script>
+
         function getTableData() {
             var Tbdata = {}; 
             var tr_length = $('.table tr').length; //tr 長度
   
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
-                Tbdata[i] = [$('#payDate'+i).val(), $('#itemTitle'+i).val(), $('#itemPercent'+i).val(), $('#itemPrice'+i).val(), $('#itemStatus'+i).val()];               
+                Tbdata[i] = [$('#name'+i).val(), $('#birthday1'+i).val(), $('#birthday2'+i).val(), $('#sex'+i).val(), $('#zodiac'+i).val(), $('#ganyear'+i).val()];               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -253,30 +253,7 @@
                 $_GET[decode(arguments[1])] = decode(arguments[2]);
         });
      
-        $.ajax({
-                type: 'POST',
-                url: "/GetCustomerList",
-                dataType: 'json',
-                success: function(msg) {
-                  var data = msg.data;
-                  console.log(data);
-                  for(var i = 0; i < data.length; i++) {
-                    $('#customer').append(
-                        `
-                        <option class="text-center" value=${data[i].id}>${data[i].company}</option>
-                        `
-                    );
-                  }
-
-
-                },
-                error: function(xhr, desc, err) {
-                    alert("HTTP Status code:" + xhr.status);
-                }
-                }).done(function() {
-                    $('#loading-cover').fadeOut(100);
-        });
-
+       
         DateInit();
  
 
@@ -318,6 +295,17 @@
 
             $('#birthday1'+tr_length).on('apply.daterangepicker', function(ev, picker) {
                 $(this).val(picker.startDate.format('YYYY-MM-DD'));
+                var month = picker.startDate.month()+1;
+                var date = picker.startDate.date();
+                var year = picker.startDate.year();
+                var obj = LunarCalendar.solarToLunar(year, month, date);
+                var now = new Date();
+                var nowYear = now.getFullYear();
+                var age = nowYear - year + 1;                
+                $('#birthday2'+this.name).val(obj.lunarYear+'-'+obj.lunarMonth+'-'+obj.lunarDay);
+                $('#age'+this.name).val(age);
+                $('#zodiac'+this.name).val(obj.zodiac);
+
             });
             $('#birthday1'+tr_length).on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');
@@ -338,6 +326,18 @@
 
             $('#birthday2'+tr_length).on('apply.daterangepicker', function(ev, picker) {
                 $(this).val(picker.startDate.format('YYYY-MM-DD'));
+                var month = picker.startDate.month()+1;
+                var date = picker.startDate.date();
+                var year = picker.startDate.year();
+                var obj = LunarCalendar.lunarToSolar(year, month, date);
+                var now = new Date();
+                var nowYear = now.getFullYear();
+                var age = nowYear - year + 1;                
+                $('#birthday1'+this.name).val(obj.year+'-'+obj.month+'-'+obj.day);
+                $('#age'+this.name).val(age);
+                obj = LunarCalendar.solarToLunar(obj.year, obj.month, obj.day);
+
+                $('#zodiac'+this.name).val(obj.zodiac);
             });
             $('#birthday2'+tr_length).on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');

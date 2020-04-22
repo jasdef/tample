@@ -38,12 +38,12 @@ router.post('/AddFamily', function (req, res) {
                 else {
                     
                     var members = requestData.members;
-                    var id = result[1].id;
+                    var id = result[1][0].id;
                     sql = '';
                     
                     for (var i = 0; i < members.length; i++) {
                         var temp = 'insert into member (name, birthday_1, birthday_2, sex, zodiac, gan_year, family_id) values (?,?,?,?,?,?,?);';
-                        sql += connection.format(sql, [members[i].name, members[i].birthday1, members[i].birthday2, members[i].sex, members[i].zodiac, members[i].gan, id]);                        
+                        sql += connection.format(temp, [members[i].name, members[i].birthday1, members[i].birthday2, members[i].sex, members[i].zodiac, members[i].gan, id]);                        
                     }
 
                     connection.query(sql, function(e, r, f) {

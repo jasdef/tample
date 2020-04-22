@@ -57,31 +57,12 @@
   
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
-                Tbdata[i] = [$('#name'+i).val(), $('#birthday1'+i).val(), $('#birthday2'+i).val(), $('#sex'+i).val(), $('#zodiac'+i).val(), $('#ganyear'+i).val()];               
+                Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
+                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gane: $('#ganyear'+i).val()};               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
              return Tbdata;     
-        }
-
-        function onItemPercentChange(element) {
-            var total = $('#totalPrice').val();
-            var price = parseInt(total*(element.value*0.01));       
-            $('#itemPrice'+element.name).val(price);
-            var temp = accounting.formatNumber(price);
-            $('#itemPriceText'+element.name).val(temp);
-
-
-            console.log(element.value);
-        }
-
-        function onItemPriceChange(element) {
-            var total = $('#totalPrice').val();
-            var percent = accounting.toFixed(element.value/total*100);
-            var temp = accounting.formatNumber(element.value);
-            $('#itemPriceText'+element.name).val(temp);
-            $('#itemPercent'+element.name).val(percent);
-            calculate();
         }
 
         function calculate() {
@@ -126,14 +107,14 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">電話
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="title" class="date-picker form-control col-md-7 col-xs-12" placeholder="" type="text">
+                                                <input id="tel" class="date-picker form-control col-md-7 col-xs-12" placeholder="" type="text">
                                             </div>
                                         </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">手機
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="elevatorNum" class="form-control col-md-7 col-xs-12" placeholder="" type="text">
+                                                <input id="phone" class="form-control col-md-7 col-xs-12" placeholder="" type="text">
                                             </div>
                                         </div>
                                        
@@ -141,14 +122,14 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">地址
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="mechanical" class="form-control col-md-7 col-xs-12" placeholder="" type="number">
+                                                <input id="address" class="form-control col-md-7 col-xs-12" placeholder="" type="text">
                                             </div>
                                         </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">戶長
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="free" class="form-control col-md-7 col-xs-12" placeholder="" type="number">
+                                                <input id="delegate" class="form-control col-md-7 col-xs-12" placeholder="" type="text">
                                             </div>
                                         </div>
                                         <div class="ln_solid"></div>
@@ -243,8 +224,7 @@
         $(document).on('click', '#addBtn', addCurrentRow);
         $(document).on('click', '#delBtn', deleteCurrentRow);
         
-        var $_GET = {};
-        
+        var $_GET = {};        
 
         document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function() {
                 function decode(s) {
@@ -253,10 +233,6 @@
                 $_GET[decode(arguments[1])] = decode(arguments[2]);
         });
      
-       
-        DateInit();
- 
-
         function addCurrentRow()
         {
             var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
@@ -264,8 +240,8 @@
             var trcomp=`
             <tr>
             <td width="100px"><input type="text" name="${tr_length}" id="name${tr_length}"  value="" /></td>  
-            <td width="100px"><input name="${tr_length}" id="birthday1${tr_length}" type="text" oninput="calculatebr1(this)"/></td>
-            <td width="100px"><input name="${tr_length}" id="birthday2${tr_length}" type="text" oninput="calculatebr2(this)"/></td>
+            <td width="100px"><input name="${tr_length}" id="birthday1${tr_length}" type="text"/></td>
+            <td width="100px"><input name="${tr_length}" id="birthday2${tr_length}" type="text"/></td>
             <td width="100px"><input name="${tr_length}" id="age${tr_length}" type="text" disabled/></td>
             <td width="100px">
                 <select name="${tr_length}" id="sex${tr_length}" name="status">
@@ -377,66 +353,23 @@
             });
         }
 
-        function clear(e) {
-            e.preventDefault();
-            $('#title').val("");
-            $('#elevatorNum').val(0);
-            $('#totalPrice').val(0);
-            $('#leftPrice').val(0);            
-            $('#startDate').val("");
-            $('#isReturn').val(0);
-            $('#isReturn').selectpicker('refresh');
-            $('#isDuty').val(0);
-            $('#isDuty').selectpicker('refresh');
-            $('#isReceipt').val(0);
-            $('#isReceipt').selectpicker('refresh');
-            $('#isStamp').val(0);
-            $('#isStamp').selectpicker('isStamp');
-            $('#customer').val(0);
-            $('#customer').selectpicker('refresh');
-            $('#note').val("");
-            $('#mechanical').val(0);
-            $('#free').val(0); 
-        }
-
-
-        function DateInit() {
-            $('#startDate').daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                },
-                timePicker: true,
-                timePicker24Hour: true,
-                singleDatePicker: true,
-                timePickerSeconds: true
-            });
-        }
-
-
-        $('#startDate').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD'));
-        });
-        $('#startDate').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-        });
 
         function sendAddData() {
             $('#loading-cover').fadeIn(100);
             var checkData = datacheck();
-
             if (checkData.r) {
                 $.ajax({
                 type: 'POST',
-                url: "/AddTransaction",
+                url: "/AddFamily",
                 data: {requestData: JSON.stringify(checkData)},
                 dataType: 'json',
                 success: function(msg) {
                     alert(msg.msg);
-                    location.replace(`/Transaction`);            
+                    location.replace(`/FamilyList`);            
                 },
                 error: function(xhr, desc, err) {
                     alert("HTTP Status code:" + xhr.status);
+                    $('#loading-cover').fadeOut(100);
                 }
                 }).done(function() {
                     $('#loading-cover').fadeOut(100);
@@ -448,34 +381,17 @@
         function datacheck() {
             var result = { r: false };
 
-            var startDate = $('#startDate').val();;
-            var title = $('#title').val();
-            var elevatorNum = $('#elevatorNum').val();
-            var totalPrice = $('#totalPrice').val();
-            var note = $('#note').val();
-            var isDuty = parseInt($('#isDuty').val());
-            var isReturn = parseInt($('#isReturn').val());
-            var isReceipt = parseInt($('#isReceipt').val());
-            var customerId = parseInt($('#customer').val());
-            var leftPrice = $('#leftPrice').val();
-            var isStamp = $('#isStamp').val();
-            var mechanical = $('#mechanical').val();
-            var free = $('#free').val();      
+            var tel = $('#tel').val();;
+            var phone = $('#phone').val();
+            var address = $('#address').val();
+            var delegate = $('#delegate').val();
+          
 
-            result.startDate = startDate;
-            result.title = title;
-            result.elevatorNum = elevatorNum;
-            result.totalPrice = totalPrice;
-            result.note = note;
-            result.isDuty = isDuty;
-            result.isReturn = isReturn;
-            result.isReceipt = isReceipt;
-            result.customerId = customerId;  
-            result.leftPrice = leftPrice;      
-            result.isStamp = isStamp;      
-            result.mechanical = mechanical;
-            result.free = free;
-            result.items = getTableData();            
+            result.tel = tel;
+            result.phone = phone;
+            result.address = address;
+            result.delegate = delegate;
+            result.members = getTableData();            
             result.r = true;
 
             return result;
@@ -494,7 +410,7 @@
         );
 
         $(document).on('click', '#sendAdd', sendAddData);
-        $(document).on('click', '#mClear', clear);
+        
 
     });
     </script>

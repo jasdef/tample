@@ -66,12 +66,12 @@ router.post('/AddFamily', function (req, res) {
 router.post('/EditFamily', function (req, res) {
     common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            var sql = "update family `tel`=?, `phone`=?, `address`=?, `delegate`=? where `id`=?";
+            var sql = "update family  set `tel`=?, `phone`=?, `address`=?, `delegate`=? where `id`=?;";
             var requestData = JSON.parse(req.body.requestData);
             sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate, requestData.id]);
             var members = requestData.members;            
             for (var i = 0; i < members.length; i++) {
-                var temp = "update member `name`=?, `birthday_1`=?, `birthday_2`=?, `sex`=?, `zodiac`=?, `gan_year`=? where `id`=?;";
+                var temp = "update member set `name`=?, `birthday_1`=?, `birthday_2`=?, `sex`=?, `zodiac`=?, `gan_year`=? where `id`=?;";
                 sql += connection.format(temp, [members[i].name, members[i].birthday1, members[i].birthday2, members[i].sex, members[i].zodiac, members[i].gan, members[i].id]);                        
             }
 
@@ -101,7 +101,7 @@ router.post('/GetFamilyData', function (req, res) {
             var FamilyID = req.body.Id;
             
             var dataSelect = "select * from family where id="+FamilyID+";";
-            dataSelect += "select * from memeber where family_id ="+FamilyID+";";
+            dataSelect += "select * from member where family_id ="+FamilyID+";";
 
             var sql = dataSelect;
 
@@ -109,12 +109,12 @@ router.post('/GetFamilyData', function (req, res) {
 
             connection.query(sql, function (error, result, fields) {
                 if (error) {
-                    common.log(req.session['account'], err);
-                    res.send({error : err});
+                    common.log(req.session['account'], error);
+                    res.send({error : error});
                 }
                 else {
             
-                    res.send({ data: result });
+                    res.send({ family: result[0][0], members: result[1] });
                 }
                 connection.release();
                 res.end();

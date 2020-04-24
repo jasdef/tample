@@ -58,7 +58,7 @@
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
                 Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
-                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gane: $('#ganyear'+i).val()};               
+                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gane: $('#ganyear'+i).val(), id: $('#mId'+i).val()};               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -78,7 +78,7 @@
                         <div class="col-md-5">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>新增信徒資料</h2>
+                                    <h2>編輯信徒資料</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
@@ -116,7 +116,7 @@
                                         <div class="form-group">
                                             <div class="col-md-9 col-md-offset-4">
                                                 <button id="mClear" class="btn btn-danger">取消</button>
-                                                <button id="sendAdd" class="btn btn-success">新增</button>
+                                                <button id="sendEdit" class="btn btn-success">新增</button>
                                             </div>
                                         </div>
                                     </div>
@@ -130,6 +130,7 @@
                                         <div class="item form-group">
                                             <table id="itemTable" class="table x_content">
                                                     <tr>
+                                                    <th>流水號</th>
                                                     <th>姓名</th>
                                                     <th>國曆生日</th>
                                                     <th>農曆生日</th>
@@ -213,12 +214,15 @@
                 $_GET[decode(arguments[1])] = decode(arguments[2]);
         });
      
+        Init();
+
         function addCurrentRow()
         {
             var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
           
             var trcomp=`
             <tr>
+            <td width="100px"><input type="text" name="${tr_length}" id="mId${tr_length}"  value="" disabled/></td>  
             <td width="100px"><input type="text" name="${tr_length}" id="name${tr_length}"  value="" /></td>  
             <td width="100px"><input name="${tr_length}" id="birthday1${tr_length}" type="text"/></td>
             <td width="100px"><input name="${tr_length}" id="birthday2${tr_length}" type="text"/></td>
@@ -333,14 +337,52 @@
             });
         }
 
+        function Init() {
+            var id = $_GET["Id"];
+            $.ajax({
+                type: 'POST',
+                url: "/GetFamilyData",
+                data: { Id: id },
+                cache: false,
+                async: true,
+                dataType: 'json',
+                success: function(msg) {
+                    var family = msg.family;
+                    var members = msg.members;
+                    console.log(msg);
+                    $('#tel').val(family.tel);
+                    $('#phone').val(family.phone);
+                    $('#address').val(family.address);
+                    $('#delegate').val(family.delegate);    
+                    
+                    for (var i = 0; i < members.length; i++) {
+                        addCurrentRow();
+                        var member = members[i]; 
+                        $('#mId'+i).val(member.id);  
+                        $('#name'+i).val(member.name);  
+                        $('#birthday1'+i).val(member.birthday_1);
+                        $('#birthday2'+i).val(member.birthday_2);
+                        $('#sex'+i).val(member.sex);               
+                        $('#zodiac'+i).val(member.zodiac);
+                        $('#ganyear'+i).val(member.gan_year);    
+                        var now = new Date();
+                        var nowYear = now.getFullYear();
+                        var year = member.birthday_1.split('-')[0];
+                        var age = nowYear - year + 1;                
+                        $('#age'+i).val(age);    
+                    }
+                }
+            });
+        }
 
-        function sendAddData() {
+
+        function sendEditData() {
             $('#loading-cover').fadeIn(100);
             var checkData = datacheck();
             if (checkData.r) {
                 $.ajax({
                 type: 'POST',
-                url: "/AddFamily",
+                url: "/EditFamily",
                 data: {requestData: JSON.stringify(checkData)},
                 dataType: 'json',
                 success: function(msg) {
@@ -365,8 +407,7 @@
             var phone = $('#phone').val();
             var address = $('#address').val();
             var delegate = $('#delegate').val();
-          
-
+            result.id = $_GET["Id"];
             result.tel = tel;
             result.phone = phone;
             result.address = address;
@@ -389,7 +430,7 @@
         }
         );
 
-        $(document).on('click', '#sendAdd', sendAddData);
+        $(document).on('click', '#sendEdit', sendEditData);
         
 
     });

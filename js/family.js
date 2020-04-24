@@ -63,50 +63,46 @@ router.post('/AddFamily', function (req, res) {
     });
 });
 
-router.post('/GetFamilyData', function (req, res) {
-    common.CreateHtml("Account_Transfer", req, res, function (err) {
+router.post('/EditFamily', function (req, res) {
+    common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            if (err) {
-                common.log(res.session['account'], err);
-                throw err;
+            var sql = "update family `tel`=?, `phone`=?, `address`=?, `delegate`=? where `id`=?";
+            var requestData = JSON.parse(req.body.requestData);
+            sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate, requestData.id]);
+            var members = requestData.members;            
+            for (var i = 0; i < members.length; i++) {
+                var temp = "update member `name`=?, `birthday_1`=?, `birthday_2`=?, `sex`=?, `zodiac`=?, `gan_year`=? where `id`=?;";
+                sql += connection.format(temp, [members[i].name, members[i].birthday1, members[i].birthday2, members[i].sex, members[i].zodiac, members[i].gan, members[i].id]);                        
             }
-            var AccountID = req.body.Id;
-            
-            var dataSelect = "select * from account where id="+AccountID+";";
-   
-            var sql = dataSelect;
 
             common.log(req.session['account'], sql);
-
             connection.query(sql, function (error, result, fields) {
                 if (error) {
-                    common.log(req.session['account'], err);
-                    res.send({error : err});
+                    common.log(req.session['account'], error);
+                    connection.release();                    
+                    res.send({ code: -1, msg: "編輯信徒戶口失敗", err: error }).end();
                 }
                 else {
-            
-                    res.send({ data: result[0] });
+                    connection.release();                    
+                    res.send({ code: 0, msg: "編輯成功!" }).end();
                 }
-                connection.release();
-                res.end();
             });
-
-        });        
+        });
     });
-
 });
 
-router.post('/GetStaffData', function (req, res) {
-    common.CreateHtml("Account_Transfer", req, res, function (err) {
+router.post('/GetFamilyData', function (req, res) {
+    common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
             if (err) {
                 common.log(res.session['account'], err);
                 throw err;
             }
-           
+            var FamilyID = req.body.Id;
             
-            var dataSelect = "select * from account where Familyo='staff' and lock_status='N';";
-   
+            var dataSelect = "select * from family where id="+FamilyID+";";
+            dataSelect += "select * from memeber where family_id ="+FamilyID+";";
+
             var sql = dataSelect;
 
             common.log(req.session['account'], sql);
@@ -129,16 +125,17 @@ router.post('/GetStaffData', function (req, res) {
 
 });
 
+
 router.post('/GetFamilyList', function (req, res) {
-    common.CreateHtml("Account_Transfer", req, res, function (err) {
+    common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
             if (err) {
                 common.log(res.session['account'], err);
                 throw err;
             }
             
-            var dataSelect = "select * from account;";
-            var countSelect = "select COUNT(*) as count from account;";
+            var dataSelect = "select * from family;";
+            var countSelect = "select COUNT(*) as count from family;";
 
    
             var sql = countSelect + dataSelect;
@@ -166,12 +163,12 @@ router.post('/GetFamilyList', function (req, res) {
 router.post('/DeleteFamily', function (req, res) {
     common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            var sql = "delete FROM account where id="  + connection.escape(req.body.Id);
+            var sql = "delete FROM family where id="  + connection.escape(req.body.Id);
             common.log(req.session['account'], sql);
             connection.query(sql, function (err, dbresults, fields) {
                 if (err) {
-                    throw err;
                     res.send({ code: "-1", msg: "刪除失敗" });
+                    throw err;
                 } else {
                     res.send({ code: "0", msg: "刪除成功" });
                 }
@@ -182,47 +179,5 @@ router.post('/DeleteFamily', function (req, res) {
     });
 });
 
-router.post('/EditFamily', function (req, res) {
-    common.CreateHtml("Family_Transfer", req, res, function (err) {
-        common.BackendConnection(res, function (err, connection) {
-            var hash = crypto.createHash('sha512');
-            var pass = hash.update(req.body.password + salt).digest('hex');
-            var tempForm = req.body;
-
-            var hash = crypto.createHash('sha512');
-            var pass = hash.update(tempForm.password + salt).digest('hex');
-
-            var editFamilySQL = "update account set `account`=?,  `name`=?, `Familyo`=?, `lock_status`=? where `id`=?;";
-
-            var FamilyData = 
-            [
-                tempForm.account,
-                tempForm.name,
-                tempForm.Familyo,
-                tempForm.lock,
-                tempForm.id
-            ];
-  
-            editFamilySQL = connection.format(editFamilySQL, FamilyData);
-
-            var sql = editFamilySQL;
-
-            common.log(req.session['account'], sql);
-            connection.query(sql, function (error, result, fields) {
-                if (error) {
-                    common.log(req.session['account'], error);
-                    connection.release();                    
-                    res.send({ code: -1, msg: "更新失敗", err: error }).end();
-
-                }
-                else {
-                    connection.release();                    
-                    res.send({ code: 0, msg: "更新成功!" }).end();
-                }
-            });
-
-        });
-    });
-});
 
 module.exports = router;

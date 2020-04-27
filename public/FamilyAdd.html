@@ -58,11 +58,35 @@
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
                 Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
-                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val()};               
+                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val()};               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
              return Tbdata;     
+        }
+
+        function onprocess(obj) {
+                var temp = obj.value.split('-');
+                var year = temp[0];
+                var month = temp[1];
+                var date = temp[2];
+                var bc = 1911+parseInt(year);
+                var now = new Date();
+                var nowYear = now.getFullYear();
+                var age = nowYear - bc + 1;   
+                var o = '';
+                if (obj.id === "birthday1"+obj.name) {
+                    o = LunarCalendar.solarToLunar(bc, month, date);
+                    $('#birthday2'+obj.name).val(o.lunarYear-1911+'-'+o.lunarMonth+'-'+o.lunarDay);
+                }
+                else {
+                    o = LunarCalendar.lunarToSolar(bc, month, date);
+                    $('#birthday1'+obj.name).val(o.year-1911+'-'+o.month+'-'+o.day);
+                    o = LunarCalendar.solarToLunar(o.year, o.month, o.day);
+                }
+                $('#age'+obj.name).val(age);
+                $('#zodiac'+obj.name).val(o.zodiac);
+                $('#ganyear'+obj.name).val(o.GanZhiYear);
         }
 </script>
 <body class="nav-md">
@@ -133,6 +157,7 @@
                                                     <th>姓名</th>
                                                     <th>國曆生日</th>
                                                     <th>農曆生日</th>
+                                                    <th>生辰</th>
                                                     <th>歲數</th>
                                                     <th>性別</th>
                                                     <th>生肖</th>
@@ -213,6 +238,8 @@
                 $_GET[decode(arguments[1])] = decode(arguments[2]);
         });
      
+ 
+
         function addCurrentRow()
         {
             var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
@@ -220,11 +247,28 @@
             var trcomp=`
             <tr>
             <td width="100px"><input type="text" name="${tr_length}" id="name${tr_length}"  value="" /></td>  
-            <td width="100px"><input name="${tr_length}" id="birthday1${tr_length}" type="text"/></td>
-            <td width="100px"><input name="${tr_length}" id="birthday2${tr_length}" type="text"/></td>
-            <td width="100px"><input name="${tr_length}" id="age${tr_length}" type="text" disabled/></td>
+            <td width="100px"><input name="${tr_length}" id="birthday1${tr_length}" onchange="onprocess(this)" type="text"/></td>
+            <td width="100px"><input name="${tr_length}" id="birthday2${tr_length}" onchange="onprocess(this)" type="text"/></td>
             <td width="100px">
-                <select name="${tr_length}" id="sex${tr_length}" name="status">
+                <select name="${tr_length}" id="birtime${tr_length}" name="birtime">
+                　<option value="0" selected="selected">吉時</option>
+                　<option value="1">子時</option>
+                　<option value="2">丑時</option>
+                　<option value="3">寅</option>
+                　<option value="4">卯</option>
+                　<option value="5">辰</option>
+                　<option value="6">巳</option>
+                　<option value="7">午</option>
+                　<option value="8">未</option>
+                　<option value="9">申</option>
+                　<option value="10">酉</option>
+                　<option value="11">戌</option>
+                　<option value="12">亥</option>
+                </select>
+            </td>
+            <td width="100px"><input name="${tr_length}" id="age${tr_length}" type="text" /></td>
+            <td width="100px">
+                <select name="${tr_length}" id="sex${tr_length}" name="sex">
                 　<option value="0" selected="selected">請選擇性別</option>
                 　<option value="1">男</option>
                 　<option value="2">女</option>
@@ -237,71 +281,6 @@
             `;
             $("#itemTable tr:last-child").after(trcomp);
 
-            $('#birthday1'+tr_length).daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                },
-                timePicker: false,
-                timePicker24Hour: false,
-                singleDatePicker: true,
-                timePickerSeconds: false,
-                showDropdowns: true
-            });        
-
-            $('#birthday1'+tr_length).on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('YYYY-MM-DD'));
-                var month = picker.startDate.month()+1;
-                var date = picker.startDate.date();
-                var year = picker.startDate.year();
-                var obj = LunarCalendar.solarToLunar(year, month, date);
-                var now = new Date();
-                var nowYear = now.getFullYear();
-                var age = nowYear - year + 1;                
-                $('#birthday2'+this.name).val(obj.lunarYear+'-'+obj.lunarMonth+'-'+obj.lunarDay);
-                $('#age'+this.name).val(age);
-                $('#zodiac'+this.name).val(obj.zodiac);
-                $('#ganyear'+this.name).val(obj.GanZhiYear);
-                console.log(obj);
-            });
-            $('#birthday1'+tr_length).on('cancel.daterangepicker', function(ev, picker) {
-                $(this).val('');
-            });
-
-            
-            $('#birthday2'+tr_length).daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                },
-                timePicker: false,
-                timePicker24Hour: false,
-                singleDatePicker: true,
-                timePickerSeconds: false,
-                showDropdowns: true
-            });        
-
-            $('#birthday2'+tr_length).on('apply.daterangepicker', function(ev, picker) {
-                $(this).val(picker.startDate.format('YYYY-MM-DD'));
-                var month = picker.startDate.month()+1;
-                var date = picker.startDate.date();
-                var year = picker.startDate.year();
-                var obj = LunarCalendar.lunarToSolar(year, month, date);
-                var now = new Date();
-                var nowYear = now.getFullYear();
-                var age = nowYear - year + 1;                
-                $('#birthday1'+this.name).val(obj.year+'-'+obj.month+'-'+obj.day);
-                $('#age'+this.name).val(age);
-                obj = LunarCalendar.solarToLunar(obj.year, obj.month, obj.day);
-
-                $('#zodiac'+this.name).val(obj.zodiac);
-                $('#ganyear'+this.name).val(obj.GanZhiYear);
-
-            });
-            $('#birthday2'+tr_length).on('cancel.daterangepicker', function(ev, picker) {
-                $(this).val('');
-            });
- 
         }
 
         function deleteCurrentRow()

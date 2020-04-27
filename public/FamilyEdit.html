@@ -66,27 +66,27 @@
         }
 
         function onprocess(obj) {
-                var temp = obj.value.split('-');
-                var year = temp[0];
-                var month = temp[1];
-                var date = temp[2];
-                var bc = 1911+parseInt(year);
-                var now = new Date();
-                var nowYear = now.getFullYear();
-                var age = nowYear - bc + 1;   
-                var o = '';
-                if (obj.id === "birthday1"+obj.name) {
-                    o = LunarCalendar.solarToLunar(bc, month, date);
-                    $('#birthday2'+obj.name).val(o.lunarYear-1911+'-'+o.lunarMonth+'-'+o.lunarDay);
-                }
-                else {
-                    o = LunarCalendar.lunarToSolar(bc, month, date);
-                    $('#birthday1'+obj.name).val(o.year-1911+'-'+o.month+'-'+o.day);
-                    o = LunarCalendar.solarToLunar(o.year, o.month, o.day);
-                }
-                $('#age'+obj.name).val(age);
-                $('#zodiac'+obj.name).val(o.zodiac);
-                $('#ganyear'+obj.name).val(o.GanZhiYear);
+            var temp = obj.value.split('-');
+            var year = temp[0];
+            var month = temp[1];
+            var date = temp[2];
+            var bc = 1911+parseInt(year);
+            var now = new Date();
+            var nowYear = now.getFullYear();
+            var age = nowYear - bc + 1;   
+            var o = '';
+            if (obj.id === "birthday1"+obj.name) {
+                o = LunarCalendar.solarToLunar(bc, month, date);
+                $('#birthday2'+obj.name).val(o.lunarYear-1911+'-'+o.lunarMonth+'-'+o.lunarDay);
+            }
+            else {
+                o = LunarCalendar.lunarToSolar(bc, month, date);
+                $('#birthday1'+obj.name).val(o.year-1911+'-'+o.month+'-'+o.day);
+                o = LunarCalendar.solarToLunar(o.year, o.month, o.day);
+            }
+            $('#age'+obj.name).val(age);
+            $('#zodiac'+obj.name).val(o.zodiac);
+            $('#ganyear'+obj.name).val(o.GanZhiYear);
         }
 </script>
 <body class="nav-md">
@@ -139,7 +139,7 @@
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-9 col-md-offset-4">
-                                                <button id="mClear" class="btn btn-danger">取消</button>
+                                                <button class="btn btn-danger" onclick="history.back()">返回</button>
                                                 <button id="sendEdit" class="btn btn-success">儲存</button>
                                             </div>
                                         </div>
@@ -406,7 +406,7 @@
         );
 
         $(document).on('click', '#sendEdit', sendEditData);
-        
+      
 
     });
     </script>

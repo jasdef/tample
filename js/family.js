@@ -24,10 +24,11 @@ router.get('/FamilyEdit', function (req, res) {
 router.post('/AddFamily', function (req, res) {
     common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            var sql = "INSERT INTO family (tel, phone, address, delegate) VALUES (?,?,?,?)";
+            var sql = "INSERT INTO family (tel, phone, address, delegate, members) VALUES (?,?,?,?,?)";
             var requestData = JSON.parse(req.body.requestData);
-            sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate]);
-            sql += "; select LAST_INSERT_ID() as id;"
+            var membersJson = JSON.stringify(requestData.members);
+
+            sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate, membersJson]);     
             common.log(req.session['account'], sql);
             connection.query(sql, function (error, result, fields) {
                 if (error) {
@@ -35,28 +36,9 @@ router.post('/AddFamily', function (req, res) {
                     connection.release();                    
                     res.send({ code: -1, msg: "新增信徒戶口失敗", err: error }).end();
                 }
-                else {
-                    
-                    var members = requestData.members;
-                    var id = result[1][0].id;
-                    sql = '';
-                    
-                    for (var i = 0; i < members.length; i++) {
-                        var temp = 'insert into member (name, birthday_1, birthday_2, sex, zodiac, gan_year, family_id) values (?,?,?,?,?,?,?);';
-                        sql += connection.format(temp, [members[i].name, members[i].birthday1, members[i].birthday2, members[i].sex, members[i].zodiac, members[i].gan, id]);                        
-                    }
-
-                    connection.query(sql, function(e, r, f) {
-                        if (e) {
-                            common.log(req.session['account'], error);
-                            connection.release();                    
-                            res.send({ code: -1, msg: "新增信徒資料失敗", err: error }).end();
-                        }
-                        else {
-                            connection.release();                    
-                            res.send({ code: 0, msg: "新增成功!" }).end();
-                        }
-                    });
+                else {                    
+                    connection.release();                    
+                    res.send({ code: 0, msg: "新增成功!" }).end();
                 }
             });
         });
@@ -66,15 +48,10 @@ router.post('/AddFamily', function (req, res) {
 router.post('/EditFamily', function (req, res) {
     common.CreateHtml("Family_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            var sql = "update family  set `tel`=?, `phone`=?, `address`=?, `delegate`=? where `id`=?;";
+            var sql = "update family  set `tel`=?, `phone`=?, `address`=?, `delegate`=?, `members`=? where `id`=?;";
             var requestData = JSON.parse(req.body.requestData);
-            sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate, requestData.id]);
-            var members = requestData.members;            
-            for (var i = 0; i < members.length; i++) {
-                var temp = "update member set `name`=?, `birthday_1`=?, `birthday_2`=?, `sex`=?, `zodiac`=?, `gan_year`=? where `id`=?;";
-                sql += connection.format(temp, [members[i].name, members[i].birthday1, members[i].birthday2, members[i].sex, members[i].zodiac, members[i].gan, members[i].id]);                        
-            }
-
+            var membersJson = JSON.stringify(requestData.members);
+            sql = connection.format(sql, [requestData.tel, requestData.phone, requestData.address, requestData.delegate, membersJson, requestData.id]);
             common.log(req.session['account'], sql);
             connection.query(sql, function (error, result, fields) {
                 if (error) {

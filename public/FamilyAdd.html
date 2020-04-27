@@ -58,7 +58,7 @@
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
                 Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
-                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gane: $('#ganyear'+i).val()};               
+                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val()};               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -261,7 +261,8 @@
                 $('#birthday2'+this.name).val(obj.lunarYear+'-'+obj.lunarMonth+'-'+obj.lunarDay);
                 $('#age'+this.name).val(age);
                 $('#zodiac'+this.name).val(obj.zodiac);
-
+                $('#ganyear'+this.name).val(obj.GanZhiYear);
+                console.log(obj);
             });
             $('#birthday1'+tr_length).on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');
@@ -294,6 +295,8 @@
                 obj = LunarCalendar.solarToLunar(obj.year, obj.month, obj.day);
 
                 $('#zodiac'+this.name).val(obj.zodiac);
+                $('#ganyear'+this.name).val(obj.GanZhiYear);
+
             });
             $('#birthday2'+tr_length).on('cancel.daterangepicker', function(ev, picker) {
                 $(this).val('');

@@ -78,7 +78,7 @@ router.post('/GetFamilyData', function (req, res) {
             var FamilyID = req.body.Id;
             
             var dataSelect = "select * from family where id="+FamilyID+";";
-            dataSelect += "select * from member where family_id ="+FamilyID+";";
+
 
             var sql = dataSelect;
 
@@ -91,7 +91,7 @@ router.post('/GetFamilyData', function (req, res) {
                 }
                 else {
             
-                    res.send({ family: result[0][0], members: result[1] });
+                    res.send({ family: result[0]});
                 }
                 connection.release();
                 res.end();

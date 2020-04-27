@@ -58,7 +58,7 @@
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
                 Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
-                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val()};               
+                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), age: $('#age'+i).val()};               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -254,16 +254,16 @@
                 　<option value="0" selected="selected">吉時</option>
                 　<option value="1">子時</option>
                 　<option value="2">丑時</option>
-                　<option value="3">寅</option>
-                　<option value="4">卯</option>
-                　<option value="5">辰</option>
-                　<option value="6">巳</option>
-                　<option value="7">午</option>
-                　<option value="8">未</option>
-                　<option value="9">申</option>
-                　<option value="10">酉</option>
-                　<option value="11">戌</option>
-                　<option value="12">亥</option>
+                　<option value="3">寅時</option>
+                　<option value="4">卯時</option>
+                　<option value="5">辰時</option>
+                　<option value="6">巳時</option>
+                　<option value="7">午時</option>
+                　<option value="8">未時</option>
+                　<option value="9">申時</option>
+                　<option value="10">酉時</option>
+                　<option value="11">戌時</option>
+                　<option value="12">亥時</option>
                 </select>
             </td>
             <td width="100px"><input name="${tr_length}" id="age${tr_length}" type="text" /></td>

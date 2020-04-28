@@ -31,8 +31,6 @@
     <!-- At.js 套件(autocomplete))  -->
     <link href="../vendors/At.js/css/jquery.atwho.min.css" rel="stylesheet">
     <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/accountiing/accounting.js"></script>
-
 
     <style type="text/css" media="screen">
     #datatable tbody td {
@@ -51,57 +49,6 @@
     </style>
 </head>
 <script>
-        function getTableData() {
-            var Tbdata = {}; 
-            var tr_length = $('.table tr').length; //tr 長度
-  
-            for(var i=0; i < tr_length-1; i++){
-                var td_length = $('.table tr');                
-                Tbdata[i] = [$('#payDate'+i).val(), $('#itemTitle'+i).val(), $('#itemPercent'+i).val(), $('#itemPrice'+i).val(), $('#itemStatus'+i).val()];               
-             }
-             Tbdata["length"] = tr_length-1;
-             console.log(Tbdata); 
-             return Tbdata;     
-        }
-
-        function onItemPercentChange(element) {
-            var total = $('#totalPrice').val();
-            var price = parseInt(total*(element.value*0.01));       
-            $('#itemPrice'+element.name).val(price);
-            var temp = accounting.formatNumber(price);
-            $('#itemPriceText'+element.name).val(temp);
-
-
-            console.log(element.value);
-        }
-
-        function onItemPriceChange(element) {
-            var total = $('#totalPrice').val();
-            var percent = accounting.toFixed(element.value/total*100);
-            var temp = accounting.formatNumber(element.value);
-            $('#itemPriceText'+element.name).val(temp);
-            $('#itemPercent'+element.name).val(percent);
-            calculate();
-        }
-
-        function calculate() {
-            var total = $('#totalPrice').val();
-            var priceText = accounting.formatNumber(total); 
-            $('#totalPriceText').val(priceText);
-            var left = total;
-            var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head    
-            var data = getTableData();
-
-            for (var i = 0; i < tr_length; i++) {
-
-                if (data[i][4] == 5) {
-                    left -= data[i][3];
-                }
-            }
-            var temp = accounting.formatNumber(left);
-            $('#leftPriceText').val(temp);
-            $('#leftPrice').val(left);
-        }
 
 </script>
 <body class="nav-md">
@@ -117,73 +64,36 @@
                         <div class="col-md-5">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>點燈</h2>
+                                    <h2>新增燈別</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
                                     <div class="form-horizontal form-label-left" novalidate>
                                         <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">電話
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">燈名
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="title" class="date-picker form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
+                                                <input id="name" class="date-picker form-control col-md-7 col-xs-12" placeholder="" type="text">
                                             </div>
                                         </div>
                                         <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">手機
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">價格
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="elevatorNum" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                       
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">地址
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="mechanical" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">戶長
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="free" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
+                                                <input id="price" class="form-control col-md-7 col-xs-12" placeholder="" type="number" value=0>
                                             </div>
                                         </div>
                                         <div class="ln_solid"></div>
                                         <div class="form-group">
                                             <div class="col-md-9 col-md-offset-4">
-                                                <button id="mClear" class="btn btn-danger">取消</button>
+                                                <button class="btn btn-danger" onclick="history.back()">返回</button>
                                                 <button id="sendAdd" class="btn btn-success">新增</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                    <div class="form-horizontal form-label-left" novalidate>
-                                        <div class="item form-group">
-                                            <table id="itemTable" class="table x_content">
-                                                    <tr>
-                                                    <th>姓名</th>
-                                                    <th>燈別</th>
-                                                    <th>總價</th>
-                                                    <th>歲數</th>
-                                                    <th>性別</th>
-                                                    <th>生肖</th>
-                                                    <th>刪除</th>
-                                                    </tr>
-                                                </table> 
-                                            <button id="addBtn">新增</button>
-                                        </div>                                     
-                                    </div>
-                                </div>
-                            </div>
-                        </div>         
+                        </div>                          
                     </div>
                  </div>
             </div>
@@ -237,14 +147,8 @@
     <script type="text/javascript" src="../vendors/At.js/js/jqueryatwho.min.js"></script>
 
     <script>
-    $(document).ready(function() {
-
-        $(document).on('click', '#addBtn', addCurrentRow);
-        $(document).on('click', '#delBtn', deleteCurrentRow);
-        
-        var $_GET = {};
-        
-
+    $(document).ready(function() {        
+        var $_GET = {};        
         document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function() {
                 function decode(s) {
                     return decodeURIComponent(s.split("+").join(" "));
@@ -252,85 +156,6 @@
                 $_GET[decode(arguments[1])] = decode(arguments[2]);
         });
      
-        $.ajax({
-                type: 'POST',
-                url: "/GetCustomerList",
-                dataType: 'json',
-                success: function(msg) {
-                  var data = msg.data;
-                  console.log(data);
-                  for(var i = 0; i < data.length; i++) {
-                    $('#customer').append(
-                        `
-                        <option class="text-center" value=${data[i].id}>${data[i].company}</option>
-                        `
-                    );
-                  }
-
-
-                },
-                error: function(xhr, desc, err) {
-                    alert("HTTP Status code:" + xhr.status);
-                }
-                }).done(function() {
-                    $('#loading-cover').fadeOut(100);
-        });
-
-        DateInit();
- 
-
-        function addCurrentRow()
-        {
-            var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
-          
-            var trcomp=`
-            <tr>
-            <td width="100px"><input type="text" name="${tr_length}" id="name${tr_length}"  value="" /></td>  
-            <td width="100px">
-                <select name="${tr_length}" id="light${tr_length}" name="status">
-                　<option value="0" selected="selected">請選擇燈別</option>
-                　<option value="1">光明燈</option>
-                　<option value="2">太歲燈</option>
-                　<option value="3">文昌燈</option>
-                　<option value="4">香油錢</option>
-                </select>
-            </td>
-            <td width="100px"><input name="${tr_length}" id="price${tr_length}" type="text" oninput="calculatebr2(this)"/></td>
-            <td width="100px"><input name="${tr_length}" id="age${tr_length}" type="text" disabled/></td>
-            <td width="100px"><input name="${tr_length}" id="sex${tr_length}" type="text" disabled/></td>
-            <td width="100px"><input name="${tr_length}" id="zodiac${tr_length}" type="text" disabled/></td>
-            <td><a id="delBtn"><font color='red'>刪除</sfont></a> </td>
-            </tr>
-            `;
-            $("#itemTable tr:last-child").after(trcomp);
-
-            $('#birthday1'+tr_length).daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                },
-                timePicker: false,
-                timePicker24Hour: false,
-                singleDatePicker: true,
-                timePickerSeconds: false,
-                showDropdowns: true
-            });        
-
-
- 
-        }
-
-        function deleteCurrentRow()
-        {
-             var isDelete=confirm("真的要刪除嗎？");
-            if(isDelete)
-            {
-                var tr=this.parentNode.parentNode;
-                var tbody=tr.parentNode;
-                tbody.removeChild(tr);
-            }
-        }
-
         function QuickNotify(message, type) {
             var icon = "";
             switch(type) {
@@ -352,50 +177,6 @@
             });
         }
 
-        function clear(e) {
-            e.preventDefault();
-            $('#title').val("");
-            $('#elevatorNum').val(0);
-            $('#totalPrice').val(0);
-            $('#leftPrice').val(0);            
-            $('#startDate').val("");
-            $('#isReturn').val(0);
-            $('#isReturn').selectpicker('refresh');
-            $('#isDuty').val(0);
-            $('#isDuty').selectpicker('refresh');
-            $('#isReceipt').val(0);
-            $('#isReceipt').selectpicker('refresh');
-            $('#isStamp').val(0);
-            $('#isStamp').selectpicker('isStamp');
-            $('#customer').val(0);
-            $('#customer').selectpicker('refresh');
-            $('#note').val("");
-            $('#mechanical').val(0);
-            $('#free').val(0); 
-        }
-
-
-        function DateInit() {
-            $('#startDate').daterangepicker({
-                autoUpdateInput: false,
-                locale: {
-                    cancelLabel: 'Clear'
-                },
-                timePicker: true,
-                timePicker24Hour: true,
-                singleDatePicker: true,
-                timePickerSeconds: true
-            });
-        }
-
-
-        $('#startDate').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('YYYY-MM-DD'));
-        });
-        $('#startDate').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-        });
-
         function sendAddData() {
             $('#loading-cover').fadeIn(100);
             var checkData = datacheck();
@@ -403,12 +184,12 @@
             if (checkData.r) {
                 $.ajax({
                 type: 'POST',
-                url: "/AddTransaction",
+                url: "/AddLight",
                 data: {requestData: JSON.stringify(checkData)},
                 dataType: 'json',
                 success: function(msg) {
                     alert(msg.msg);
-                    location.replace(`/Transaction`);            
+                    location.replace(`/LightList`);            
                 },
                 error: function(xhr, desc, err) {
                     alert("HTTP Status code:" + xhr.status);
@@ -423,34 +204,17 @@
         function datacheck() {
             var result = { r: false };
 
-            var startDate = $('#startDate').val();;
-            var title = $('#title').val();
-            var elevatorNum = $('#elevatorNum').val();
-            var totalPrice = $('#totalPrice').val();
-            var note = $('#note').val();
-            var isDuty = parseInt($('#isDuty').val());
-            var isReturn = parseInt($('#isReturn').val());
-            var isReceipt = parseInt($('#isReceipt').val());
-            var customerId = parseInt($('#customer').val());
-            var leftPrice = $('#leftPrice').val();
-            var isStamp = $('#isStamp').val();
-            var mechanical = $('#mechanical').val();
-            var free = $('#free').val();      
+            var name = $('#name').val();;
+            var price = $('#price').val();
+   
+            if (checkIsNullOrEmpty(name)) {
+                alert("沒填燈名!!");
+                return result;
+            }
 
-            result.startDate = startDate;
-            result.title = title;
-            result.elevatorNum = elevatorNum;
-            result.totalPrice = totalPrice;
-            result.note = note;
-            result.isDuty = isDuty;
-            result.isReturn = isReturn;
-            result.isReceipt = isReceipt;
-            result.customerId = customerId;  
-            result.leftPrice = leftPrice;      
-            result.isStamp = isStamp;      
-            result.mechanical = mechanical;
-            result.free = free;
-            result.items = getTableData();            
+            result.name = name;
+            result.price = price;
+          
             result.r = true;
 
             return result;
@@ -469,8 +233,6 @@
         );
 
         $(document).on('click', '#sendAdd', sendAddData);
-        $(document).on('click', '#mClear', clear);
-
     });
     </script>
 </body>

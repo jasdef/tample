@@ -23,37 +23,37 @@ router.get('/LightEdit', function (req, res) {
 
 router.post('/AddLight', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
-        var hash = crypto.createHash('sha512');
-        var pass = hash.update(req.body.password + salt).digest('hex');
-        var tempForm = req.body;
+        var requestData = JSON.parse(req.body.requestData);
+
         common.BackendConnection(res, function (err, connection) {
-            var sql = "INSERT INTO account (account,password,name,Lighto,lock_status) VALUES (?,?,?,?,'N')";
-            sql = connection.format(sql, [tempForm.Account, pass, tempForm.name, tempForm.LightGroup]);
+            var sql = "INSERT INTO ligth_type (name, price) VALUES (?,?)";
+            sql = connection.format(sql, [requestData.name, requestData.price]);
             common.log(req.session['account'], sql);
-            connection.query(sql, function (err, dbresults, fields) {
-                if (err) {
-                    throw err;
-                    res.send({ code: "-1", msg: "失敗" });
-                } else {
-                    res.send({ code: "0", msg: "成功", data: dbresults });
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], error);
+                    connection.release();                    
+                    res.send({ code: -1, msg: "新增失敗", err: error }).end();
                 }
-                connection.release();
-                res.end();
+                else {                    
+                    connection.release();                    
+                    res.send({ code: 0, msg: "新增成功!" }).end();
+                }
             });
         });
     });
 });
 
 router.post('/GetLightData', function (req, res) {
-    common.CreateHtml("Account_Transfer", req, res, function (err) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
             if (err) {
                 common.log(res.session['account'], err);
                 throw err;
             }
-            var AccountID = req.body.Id;
+            var lightID = req.body.Id;
             
-            var dataSelect = "select * from account where id="+AccountID+";";
+            var dataSelect = "select * from light_type where id="+lightID+";";
    
             var sql = dataSelect;
 
@@ -77,49 +77,17 @@ router.post('/GetLightData', function (req, res) {
 
 });
 
-router.post('/GetStaffData', function (req, res) {
-    common.CreateHtml("Account_Transfer", req, res, function (err) {
-        common.BackendConnection(res, function (err, connection) {
-            if (err) {
-                common.log(res.session['account'], err);
-                throw err;
-            }
-           
-            
-            var dataSelect = "select * from account where Lighto='staff' and lock_status='N';";
-   
-            var sql = dataSelect;
-
-            common.log(req.session['account'], sql);
-
-            connection.query(sql, function (error, result, fields) {
-                if (error) {
-                    common.log(req.session['account'], err);
-                    res.send({error : err});
-                }
-                else {
-            
-                    res.send({ data: result });
-                }
-                connection.release();
-                res.end();
-            });
-
-        });        
-    });
-
-});
 
 router.post('/GetLightList', function (req, res) {
-    common.CreateHtml("Account_Transfer", req, res, function (err) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
             if (err) {
                 common.log(res.session['account'], err);
                 throw err;
             }
             
-            var dataSelect = "select * from account;";
-            var countSelect = "select COUNT(*) as count from account;";
+            var dataSelect = "select * from light_type;";
+            var countSelect = "select COUNT(*) as count from light_type;";
 
    
             var sql = countSelect + dataSelect;
@@ -147,12 +115,12 @@ router.post('/GetLightList', function (req, res) {
 router.post('/DeleteLight', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            var sql = "delete FROM account where id="  + connection.escape(req.body.Id);
+            var sql = "delete FROM light_type where id="  + connection.escape(req.body.Id);
             common.log(req.session['account'], sql);
             connection.query(sql, function (err, dbresults, fields) {
                 if (err) {
-                    throw err;
                     res.send({ code: "-1", msg: "刪除失敗" });
+                    throw err;
                 } else {
                     res.send({ code: "0", msg: "刪除成功" });
                 }
@@ -166,22 +134,14 @@ router.post('/DeleteLight', function (req, res) {
 router.post('/EditLight', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {
-            var hash = crypto.createHash('sha512');
-            var pass = hash.update(req.body.password + salt).digest('hex');
-            var tempForm = req.body;
-
-            var hash = crypto.createHash('sha512');
-            var pass = hash.update(tempForm.password + salt).digest('hex');
-
-            var editLightSQL = "update account set `account`=?,  `name`=?, `Lighto`=?, `lock_status`=? where `id`=?;";
+            var requestData = JSON.parse(req.body.requestData);
+            var editLightSQL = "update light_type set `name`=?,  `price`=? where `id`=?;";
 
             var LightData = 
             [
-                tempForm.account,
-                tempForm.name,
-                tempForm.Lighto,
-                tempForm.lock,
-                tempForm.id
+                requestData.name,
+                requestData.price,
+                requestData.id,
             ];
   
             editLightSQL = connection.format(editLightSQL, LightData);

@@ -21,7 +21,7 @@ router.post('/AddLight', function (req, res) {
         var requestData = JSON.parse(req.body.requestData);
 
         common.BackendConnection(res, function (err, connection) {
-            var sql = "INSERT INTO ligth_type (name, price) VALUES (?,?)";
+            var sql = "INSERT INTO light_type (name, price) VALUES (?,?)";
             sql = connection.format(sql, [requestData.name, requestData.price]);
             common.log(req.session['account'], sql);
             connection.query(sql, function (error, result, fields) {

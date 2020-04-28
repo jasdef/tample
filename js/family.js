@@ -1,10 +1,5 @@
 var express = require('express');
-var path = require("path");
 var router = express.Router();
-var fs = require('fs');
-var async = require('async');
-var crypto = require('crypto');
-var salt = "liton";
 
 router.get('/FamilyAdd', function (req, res) {
     common.log(req.session['account'], 'call FamilyAdd');

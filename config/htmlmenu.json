@@ -19,7 +19,13 @@
         "enable": true,
         "child":
         {
-            "點燈列表":
+            "點燈作業":
+            {
+                "enable": true,
+                "autho": "admin",
+                "href": "LightProcess"
+            } ,
+            "燈別列表":
             {
                 "enable": true,
                 "autho": "admin",

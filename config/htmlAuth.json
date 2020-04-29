@@ -125,6 +125,27 @@
         "type": "view",
         "htmlpath": "./../public/LightEdit.html"
     },
+    "LightHistory":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightHistory.html"
+    },
+    "LightProcess":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightProcess.html"
+    },
+    "LightWork":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightWork.html"
+    },
     "PhotoView":
     {
         "autho": "admin",

@@ -16,6 +16,22 @@ router.get('/LightEdit', function (req, res) {
     common.CreateHtml("LightEdit", req, res);
 });
 
+router.get('/LightProcess', function (req, res) {
+    common.log(req.session['account'], 'call LightProcess');
+    common.CreateHtml("LightProcess", req, res);
+});
+
+router.get('/LightHistory', function (req, res) {
+    common.log(req.session['account'], 'call LightHistory');
+    common.CreateHtml("LightHistory", req, res);
+});
+
+router.get('/LightWork', function (req, res) {
+    common.log(req.session['account'], 'call LightWork');
+    common.CreateHtml("LightWork", req, res);
+});
+
+
 router.post('/AddLight', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         var requestData = JSON.parse(req.body.requestData);

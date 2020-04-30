@@ -53,6 +53,8 @@
 <script>
         var members = {};        
         var lightType = {};
+        var totalPrice = 0;
+        var ganyear = "";
 
         function getTableData() {
             var Tbdata = {}; 
@@ -60,8 +62,9 @@
   
             for(var i=0; i < tr_length-1; i++){
                 var td_length = $('.table tr');                
-                Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
-                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val(), id: $('#mId'+i).val(),birtime: $('#birtime'+i).val(), age: $('#age'+i).val()};               
+                Tbdata[i] = {name: $('#name'+i).val(), lightType: $('#lightType'+i).val(), 
+                birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
+                gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note').val()};               
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -103,12 +106,29 @@
             var light = lightType[index];
             var priceText = accounting.formatNumber(light.price);
             $('#price'+i).val(light.price);    
-            $('#priceText'+i).val(priceText);               
+            $('#priceText'+i).val(priceText);    
+            calculate();           
         }
 
         function onPriceChange(element) {
             var temp = accounting.formatNumber(element.value);
-            $('#priceText'+element.name).val(temp);       
+            $('#priceText'+element.name).val(temp);   
+            calculate();    
+        }
+
+        function calculate() {
+            var total = 0;       
+            var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head    
+            var data = getTableData();
+
+            for (var i = 0; i < tr_length; i++) {
+                var d = data[i];
+                total += parseInt(d.price);
+            }
+
+            totalPrice = total;
+            var priceText = accounting.formatNumber(total); 
+            $('#totalPriceText').val(priceText);
         }
 
 
@@ -164,7 +184,7 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">總金額
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="totalPrice" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
+                                                <input id="totalPriceText" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
                                             </div>
                                         </div>
                                         <div class="ln_solid"></div>
@@ -364,6 +384,7 @@
                 var tbody=tr.parentNode;
                 tbody.removeChild(tr);
             }
+            calculate();
         }
 
         function QuickNotify(message, type) {
@@ -389,6 +410,10 @@
 
         function Init() {
             var id = $_GET["Id"];
+            var now = new Date();
+            var nowYear = now.getFullYear();
+            ganyear = nowYear - 1911;                           
+      
             $.ajax({
                 type: 'POST',
                 url: "/GetFamilyData",
@@ -403,7 +428,7 @@
                     $('#tel').val(family.tel);
                     $('#phone').val(family.phone);
                     $('#address').val(family.address);
-                    $('#delegate').val(family.delegate);                        
+                    $('#delegate').val(family.delegate);                     
                 }
             });
 

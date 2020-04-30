@@ -55,6 +55,38 @@ router.post('/AddLight', function (req, res) {
     });
 });
 
+router.post('/LightWorkAdd', function (req, res) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
+        var requestData = JSON.parse(req.body.requestData);
+        var nameListString = JSON.stringify(requestData.nameList);
+        var nameList = requestData.nameList;
+        
+        common.BackendConnection(res, function (err, connection) {
+            var sql = "INSERT INTO light_history (name_list, total_price, gan_year, family_id) VALUES (?,?,?,?);";
+            sql = connection.format(sql, [nameListString, requestData.totalPrice, requestData.ganYear, requestData.familyId]);
+            
+            for(var i = 0; i < nameList.length; i++) {
+                var name = nameList[i];
+                var temp = "insert into light_record (name, light_id, price, note, gan_year, family_id) values (?,?,?,?,?,?);";
+                sql += connection.format(temp, [name.name, name.lightId, name.price, name.note, requestData.ganYear, requestData.familyId]);
+            }
+            
+            common.log(req.session['account'], sql);
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], error);
+                    connection.release();                    
+                    res.send({ code: -1, msg: "新增失敗", err: error }).end();
+                }
+                else {                    
+                    connection.release();                    
+                    res.send({ code: 0, msg: "新增成功!" }).end();
+                }
+            });
+        });
+    });
+});
+
 router.post('/GetLightData', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {

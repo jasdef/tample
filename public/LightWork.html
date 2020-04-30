@@ -61,8 +61,10 @@
             var tr_length = $('.table tr').length; //tr 長度
   
             for(var i=0; i < tr_length-1; i++){
-                var td_length = $('.table tr');                
-                Tbdata[i] = {name: $('#name'+i).val(), lightType: $('#lightType'+i).val(), 
+                var td_length = $('.table tr');  
+                var lightIndex = $('#lightType'+i).val();
+                var light = lightType[lightIndex];                
+                Tbdata[i] = {name: $('#name'+i).val(), lightId: light.id, 
                 birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
                 gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note').val()};               
              }
@@ -459,7 +461,7 @@
                 dataType: 'json',
                 success: function(msg) {
                     alert(msg.msg);
-                    location.replace(`/FamilyList`);            
+                    location.replace(`/LightProcess`);            
                 },
                 error: function(xhr, desc, err) {
                     alert("HTTP Status code:" + xhr.status);
@@ -474,19 +476,11 @@
  
         function datacheck() {
             var result = { r: false };
-
-            var tel = $('#tel').val();;
-            var phone = $('#phone').val();
-            var address = $('#address').val();
-            var delegate = $('#delegate').val();
-            result.id = $_GET["Id"];
-            result.tel = tel;
-            result.phone = phone;
-            result.address = address;
-            result.delegate = delegate;
-            result.members = getTableData();            
+            result.familyId = $_GET["Id"];
+            result.totalPrice = totalPrice;
+            result.ganyear = ganyear;
+            result.nameList = getTableData();            
             result.r = true;
-
             return result;
         }
 

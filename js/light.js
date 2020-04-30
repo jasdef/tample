@@ -62,9 +62,8 @@ router.post('/GetLightData', function (req, res) {
                 common.log(res.session['account'], err);
                 throw err;
             }
-            var lightID = req.body.Id;
-            
-            var dataSelect = "select * from light_type where id="+lightID+";";
+             
+            var dataSelect = "select * from light_type;";
    
             var sql = dataSelect;
 
@@ -77,7 +76,7 @@ router.post('/GetLightData', function (req, res) {
                 }
                 else {
             
-                    res.send({ data: result[0] });
+                    res.send({ lightType: result });
                 }
                 connection.release();
                 res.end();
@@ -87,7 +86,6 @@ router.post('/GetLightData', function (req, res) {
     });
 
 });
-
 
 router.post('/GetLightList', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {

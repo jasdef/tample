@@ -177,9 +177,7 @@
                     location.href=`/LightWork?Id=${data.id}`;
                     break;
                 case "history":
-                    if (confirm("確定刪除嗎?")) {                      
-                        location.href=`/LightHistory?Id=${data.id}`;
-                    }
+                    location.replace(`/LightHistory?Id=${data.id}`);
                     break;
             }
 

@@ -148,6 +148,7 @@
                     }               
                 ],
                 'rowCallback': function(row, data, dataIndex) {
+                    $('td:eq(3)', row).html(moment(data.date).format("YYYY-MM-DD"));   
                 },
                 "ajax": {
                     "url": "/GetLightHistory",
@@ -171,8 +172,8 @@
         $('#datatable tbody').on('click', 'button', function(e) {
             var data = table.row($(this).parents('tr')).data();
             switch ($(this).attr('id')) {
-                case "add":
-                    location.href=`/LightWorkEdit?Id=${data.id}`;
+                case "edit":
+                    location.href=`/LightHistoryEdit?Id=${data.id}`;
                     break;
                 case "history":
                     location.href=`/LightWorkCopy?Id=${data.id}`;

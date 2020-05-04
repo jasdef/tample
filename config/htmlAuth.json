@@ -146,6 +146,20 @@
         "type": "view",
         "htmlpath": "./../public/LightWork.html"
     },
+    "LightHistoryEdit":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightHistoryEdit.html"
+    },
+    "LightWorkCopy":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightWorkCopy.html"
+    },
     "PhotoView":
     {
         "autho": "admin",

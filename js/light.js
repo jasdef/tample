@@ -31,6 +31,16 @@ router.get('/LightWork', function (req, res) {
     common.CreateHtml("LightWork", req, res);
 });
 
+router.get('/LightHistoryEdit', function (req, res) {
+    common.log(req.session['account'], 'call LightHistoryEdit');
+    common.CreateHtml("LightHistoryEdit", req, res);
+});
+
+router.get('/LightWorkCopy', function (req, res) {
+    common.log(req.session['account'], 'call LightWorkCopy');
+    common.CreateHtml("LightWorkCopy", req, res);
+});
+
 
 router.post('/AddLight', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
@@ -60,7 +70,7 @@ router.post('/LightWorkAdd', function (req, res) {
         var requestData = JSON.parse(req.body.requestData);
         var nameListString = JSON.stringify(requestData.nameList);
         var nameList = requestData.nameList;
-        
+
         common.BackendConnection(res, function (err, connection) {
             var sql = "INSERT INTO light_history (name_list, total_price, gan_year, family_id) VALUES (?,?,?,?);";
             sql = connection.format(sql, [nameListString, requestData.totalPrice, requestData.ganYear, requestData.familyId]);
@@ -116,7 +126,39 @@ router.post('/GetLightData', function (req, res) {
 
         });        
     });
+});
 
+router.post('/GetLightHistoryData', function (req, res) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
+        common.BackendConnection(res, function (err, connection) {
+            if (err) {
+                common.log(res.session['account'], err);
+                throw err;
+            }
+             
+            var historyID = req.body.Id;
+            
+            var dataSelect = "select * from light_history where id="+historyID+";";
+   
+            var sql = dataSelect;
+
+            common.log(req.session['account'], sql);
+
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], err);
+                    res.send({error : err});
+                }
+                else {
+            
+                    res.send({ lightType: result });
+                }
+                connection.release();
+                res.end();
+            });
+
+        });        
+    });
 });
 
 router.post('/GetLightList', function (req, res) {
@@ -150,7 +192,39 @@ router.post('/GetLightList', function (req, res) {
 
         });        
     });
+});
 
+router.post('/GetLightHistory', function (req, res) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
+        common.BackendConnection(res, function (err, connection) {
+            if (err) {
+                common.log(res.session['account'], err);
+                throw err;
+            }
+            
+            var dataSelect = "select * from light_history;";
+            var countSelect = "select COUNT(*) as count from light_history;";
+
+   
+            var sql = countSelect + dataSelect;
+
+            common.log(req.session['account'], sql);
+
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], err);
+                    res.send({error : err});
+                }
+                else {
+                    var totallength = result[0][0].count;
+                    res.send({ recordsTotal: totallength, recordsFiltered: totallength, data: result[1] });
+                }
+                connection.release();
+                res.end();
+            });
+
+        });        
+    });
 });
 
 router.post('/DeleteLight', function (req, res) {

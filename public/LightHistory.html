@@ -57,10 +57,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>流水號</th>
-                                                    <th>戶長</th>
-                                                    <th>地址</th>
-                                                    <th>電話</th>   
-                                                    <th>手機</th>                                     
+                                                    <th>年度</th>
+                                                    <th>總金額</th>
+                                                    <th>產單時間</th>                                   
                                                     <th>功能</th>
                                                 </tr>
                                             </thead>
@@ -138,21 +137,20 @@
                 ],
                 "columns": [
                     { "data": "id"},
-                    { "data": "delegate"},
-                    { "data": "address" },
-                    { "data": "tel" },
-                    { "data": "phone" },
+                    { "data": "gan_year"},
+                    { "data": "total_price" },
+                    { "data": "date" },
                     { "defaultContent": 
                         `<div class="btn-group btn-group-sm" style="display: flex;">
-                            <button class="btn btn-info" id='add' title="新增點燈"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 新增點燈</button>                            
-                            <button class="btn btn-danger active" id='history' title="點燈紀錄"><i class="fa fa-ban" aria-hidden="true"></i>點燈紀錄</button>
+                            <button class="btn btn-info" id='edit' title="編輯"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 編輯</button>                            
+                            <button class="btn btn-danger active" id='copy' title="拷貝新增"><i class="fa fa-ban" aria-hidden="true"></i>拷貝新增</button>
                         </div>`
                     }               
                 ],
                 'rowCallback': function(row, data, dataIndex) {
                 },
                 "ajax": {
-                    "url": "/GetFamilyList",
+                    "url": "/GetLightHistory",
                     "type": "POST",
                     //"data": { requestData: JSON.stringify(requestData) },
                     "cache": "false",
@@ -174,10 +172,10 @@
             var data = table.row($(this).parents('tr')).data();
             switch ($(this).attr('id')) {
                 case "add":
-                    location.href=`/LightWork?Id=${data.id}`;
+                    location.href=`/LightWorkEdit?Id=${data.id}`;
                     break;
                 case "history":
-                    location.href=`/LightHistory?Id=${data.id}`;
+                    location.href=`/LightWorkCopy?Id=${data.id}`;
                     break;
             }
 

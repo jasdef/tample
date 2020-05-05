@@ -65,6 +65,40 @@ router.post('/AddLight', function (req, res) {
     });
 });
 
+router.post('/LightWorkEdit', function (req, res) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
+        var requestData = JSON.parse(req.body.requestData);
+        var nameListString = JSON.stringify(requestData.nameList);
+        var nameList = requestData.nameList;
+
+        common.BackendConnection(res, function (err, connection) {
+            var sql = "update light_history set name_list=?, total_price=?, gan_year=? where id=?;";
+            sql = connection.format(sql, [nameListString, requestData.totalPrice, requestData.ganYear, requestData.historyId]);
+            
+            sql += "update light_record set is_del=1 where history_id="+requestData.historyId+";";
+
+            for(var i = 0; i < nameList.length; i++) {
+                var name = nameList[i];
+                var temp = "insert into light_record (name, light_id, price, note, gan_year, family_id, history_id) values (?,?,?,?,?,?,?);";
+                sql += connection.format(temp, [name.name, name.lightId, name.price, name.note, requestData.ganYear, requestData.familyId, requestData.historyId]);
+            }
+            
+            common.log(req.session['account'], sql);
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], error);
+                    connection.release();                    
+                    res.send({ code: -1, msg: "編輯失敗", err: error }).end();
+                }
+                else {                    
+                    connection.release();                    
+                    res.send({ code: 0, msg: "編輯成功!" }).end();
+                }
+            });
+        });
+    });
+});
+
 router.post('/LightWorkAdd', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         var requestData = JSON.parse(req.body.requestData);
@@ -73,13 +107,8 @@ router.post('/LightWorkAdd', function (req, res) {
 
         common.BackendConnection(res, function (err, connection) {
             var sql = "INSERT INTO light_history (name_list, total_price, gan_year, family_id) VALUES (?,?,?,?);";
-            sql = connection.format(sql, [nameListString, requestData.totalPrice, requestData.ganYear, requestData.familyId]);
-            
-            for(var i = 0; i < nameList.length; i++) {
-                var name = nameList[i];
-                var temp = "insert into light_record (name, light_id, price, note, gan_year, family_id) values (?,?,?,?,?,?);";
-                sql += connection.format(temp, [name.name, name.lightId, name.price, name.note, requestData.ganYear, requestData.familyId]);
-            }
+            sql = connection.format(sql, [nameListString, requestData.totalPrice, requestData.ganYear, requestData.familyId]);            
+            sql += 'select LAST_INSERT_ID() as id;';
             
             common.log(req.session['account'], sql);
             connection.query(sql, function (error, result, fields) {
@@ -88,9 +117,27 @@ router.post('/LightWorkAdd', function (req, res) {
                     connection.release();                    
                     res.send({ code: -1, msg: "新增失敗", err: error }).end();
                 }
-                else {                    
-                    connection.release();                    
-                    res.send({ code: 0, msg: "新增成功!" }).end();
+                else {  
+                    var historyId = result[1][0].id;
+                    sql = "";
+                    
+                    for(var i = 0; i < nameList.length; i++) {
+                        var name = nameList[i];
+                        var temp = "insert into light_record (name, light_id, price, note, gan_year, family_id, history_id) values (?,?,?,?,?,?,?);";
+                        sql += connection.format(temp, [name.name, name.lightId, name.price, name.note, requestData.ganYear, requestData.familyId, historyId]);
+                    }                  
+                    
+                    connection.query(sql, function(e, r, f) {
+                        if (e) {
+                            common.log(req.session['account'], e);
+                            connection.release();                    
+                            res.send({ code: -1, msg: "新增失敗", err: e }).end();
+                        }
+                        else {
+                            connection.release();                    
+                            res.send({ code: 0, msg: "新增成功!" }).end();
+                        }
+                    });
                 }
             });
         });
@@ -151,7 +198,7 @@ router.post('/GetLightHistoryData', function (req, res) {
                 }
                 else {
             
-                    res.send({ lightType: result });
+                    res.send({ history: result[0] });
                 }
                 connection.release();
                 res.end();

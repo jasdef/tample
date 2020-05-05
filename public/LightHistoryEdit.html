@@ -57,19 +57,27 @@
         var members = {};
         var totalPrice = 0;
         var ganyear = "";
+        var totalLength = 0;
+
+        function checkIsNullOrEmpty(obj) {
+            if (obj == 'undefined' || obj == null || obj == 0 || obj == '')
+                return true;
+            return false;
+        }
 
         function getTableData() {
             var Tbdata = {}; 
             var tr_length = $('.table tr').length; //tr 長度
-  
-            for(var i=0; i < tr_length-1; i++){
-                var td_length = $('.table tr');  
-                var lightIndex = $('#lightType'+i).val();
-                console.log(lightIndex);
-                var light = lightType[lightIndex];                                
-                Tbdata[i] = {name: $('#name'+i).val(), lightId: light.id, 
-                birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
-                gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note'+i).val()};               
+            var j = 0;
+            for(var i=0; i < totalLength; i++){
+                var lightIndex = $('#lightType'+i).val();            
+                if (!checkIsNullOrEmpty(lightIndex)) {
+                    var light = lightType[lightIndex];                                
+                    Tbdata[j] = {name: $('#name'+i).val(), lightId: light.id, 
+                    birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
+                    gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note'+i).val()}; 
+                    j++
+                }              
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -300,7 +308,7 @@
         function addCurrentRow()
         {
             var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
-          
+            totalLength++;
             var trcomp=`
             <tr>   
             <td width="100px">
@@ -534,13 +542,6 @@
             result.nameList = getTableData();            
             result.r = true;
             return result;
-        }
-
-
-        function checkIsNullOrEmpty(obj) {
-            if (obj == 'undefined' || obj == null || obj == 0 || obj == '')
-                return true;
-            return false;
         }
 
         $(window).bind('beforeunload',function(){

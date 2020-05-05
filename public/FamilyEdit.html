@@ -51,18 +51,29 @@
 </head>
 <script>
 
+        var totalLength = 0;
+
+        function checkIsNullOrEmpty(obj) {
+            if (obj == 'undefined' || obj == null || obj == 0 || obj == '')
+                return true;
+            return false;
+        }
+
         function getTableData() {
             var Tbdata = {}; 
             var tr_length = $('.table tr').length; //tr 長度
-  
-            for(var i=0; i < tr_length-1; i++){
-                var td_length = $('.table tr');                
-                Tbdata[i] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
-                birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val(), id: $('#mId'+i).val(),birtime: $('#birtime'+i).val()};               
-             }
-             Tbdata["length"] = tr_length-1;
-             console.log(Tbdata); 
-             return Tbdata;     
+            var j = 0;
+
+            for(var i=0; i < totalLength; i++){
+                if (!checkIsNullOrEmpty($('#name'+i).val())) {
+                    Tbdata[j] = {name: $('#name'+i).val(), birthday1: $('#birthday1'+i).val(), 
+                    birthday2: $('#birthday2'+i).val(), sex: $('#sex'+i).val(), zodiac: $('#zodiac'+i).val(), gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val()};
+                    j++;
+                }        
+            }
+            Tbdata["length"] = tr_length-1;
+            console.log(Tbdata); 
+            return Tbdata;     
         }
 
         function onprocess(obj) {
@@ -243,7 +254,7 @@
         function addCurrentRow()
         {
             var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
-          
+            totalLength++;
             var trcomp=`
             <tr>   
             <td width="100px"><input type="text" name="${tr_length}" id="name${tr_length}"  value="" /></td>  
@@ -397,13 +408,6 @@
             result.r = true;
 
             return result;
-        }
-
-
-        function checkIsNullOrEmpty(obj) {
-            if (obj == 'undefined' || obj == null || obj == 0 || obj == '')
-                return true;
-            return false;
         }
 
         $(window).bind('beforeunload',function(){

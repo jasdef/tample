@@ -51,22 +51,33 @@
     </style>
 </head>
 <script>
-        var members = {};        
+        var nameList = {};        
         var lightType = {};
+        var familyId = 0;
+        var members = {};
         var totalPrice = 0;
         var ganyear = "";
+        var totalLength = 0;
+
+        function checkIsNullOrEmpty(obj) {
+            if (obj == 'undefined' || obj == null || obj == '')
+                return true;
+            return false;
+        }
 
         function getTableData() {
             var Tbdata = {}; 
             var tr_length = $('.table tr').length; //tr 長度
-  
-            for(var i=0; i < tr_length-1; i++){
-                var td_length = $('.table tr');  
-                var lightIndex = $('#lightType'+i).val();
-                var light = lightType[lightIndex];                
-                Tbdata[i] = {name: $('#name'+i).val(), lightId: light.id, 
-                birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
-                gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note').val()};               
+            var j = 0;
+            for(var i=0; i < totalLength; i++){
+                var lightIndex = $('#lightType'+i).val();            
+                if (!checkIsNullOrEmpty(lightIndex)) {
+                    var light = lightType[lightIndex];                                
+                    Tbdata[j] = {name: $('#name'+i).val(), lightId: light.id, 
+                    birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
+                    gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note'+i).val()}; 
+                    j++
+                }              
              }
              Tbdata["length"] = tr_length-1;
              console.log(Tbdata); 
@@ -297,7 +308,7 @@
         function addCurrentRow()
         {
             var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
-          
+            totalLength++;
             var trcomp=`
             <tr>   
             <td width="100px">
@@ -412,10 +423,40 @@
 
         function Init() {
             var id = $_GET["Id"];
-            var now = new Date();
-            var nowYear = now.getFullYear();
-            ganyear = nowYear - 1911;                           
-      
+                                     
+            $.ajax({
+                type: 'POST',
+                url: "/GetLightData",
+                data: { Id: id },
+                cache: false,
+                async: true,
+                dataType: 'json',
+                success: function(msg) {
+                    console.log(msg);
+                    lightType = msg.lightType;     
+                    
+                    $.ajax({
+                        type: 'POST',
+                        url: "/GetLightHistoryData",
+                        data: { Id: id },
+                        cache: false,
+                        async: true,
+                        dataType: 'json',
+                        success: function(msg) {
+                            console.log(msg);
+                            var history = msg.history;                           
+                            nameList = JSON.parse(history.name_list);
+                            $('#totalPriceText').val(history.total_price); 
+                            ganyear = history.gan_year;                                                                       
+                            getFamilyData(history.family_id);                            
+                        }
+                    });
+                }
+            });
+        }
+
+        function getFamilyData(id) {
+            familyId = id;
             $.ajax({
                 type: 'POST',
                 url: "/GetFamilyData",
@@ -430,25 +471,43 @@
                     $('#tel').val(family.tel);
                     $('#phone').val(family.phone);
                     $('#address').val(family.address);
-                    $('#delegate').val(family.delegate);                     
-                }
-            });
+                    $('#delegate').val(family.delegate);  
+                    
+                    for (var i = 0; i < nameList.length; i++) {
+                        addCurrentRow();
+                        var member = nameList[i]; 
+                        $('#name'+i).val(member.name);                          
+                        $('#birthday2'+i).val(member.birthday2);
 
-            $.ajax({
-                type: 'POST',
-                url: "/GetLightData",
-                data: { Id: id },
-                cache: false,
-                async: true,
-                dataType: 'json',
-                success: function(msg) {
-                    console.log(msg);
-                    lightType = msg.lightType;                        
+                        for(var j = 0; j < lightType.length; j++) {
+                            var l = lightType[j];
+                            if (l.id == member.lightId) { //因為存的是ID 用這方式 找index
+                                $('#lightType'+i).val(j);
+                                break;
+                            }
+                        }
+
+                        $('#lightClass'+i).val(member.lightClass);            
+                        $('#birtime'+i).val(member.birtime);               
+                        $('#zodiac'+i).val(member.zodiac);
+                        $('#ganyear'+i).val(member.gan); 
+                        $('#price'+i).val(member.price); 
+                        $('#note'+i).val(member.note);                        
+                        var priceText = accounting.formatNumber(member.price);         
+                        $('#priceText'+i).val(priceText); 
+                        // var temp = member.birthday2.split('-');
+                        // var year = temp[0];
+                        // var bc = 1911+parseInt(year);
+                        // var now = new Date();
+                        // var nowYear = now.getFullYear();
+                        // var age = nowYear - bc + 1;                           
+                        // $('#age'+i).val(age);    
+                    }
+
+                    calculate();
                 }
             });
-            
         }
-
 
         function sendAddData() {
             $('#loading-cover').fadeIn(100);
@@ -461,7 +520,7 @@
                 dataType: 'json',
                 success: function(msg) {
                     alert(msg.msg);
-                    location.replace(`/LightProcess`);            
+                    location.replace(`/LightHistory`);            
                 },
                 error: function(xhr, desc, err) {
                     alert("HTTP Status code:" + xhr.status);
@@ -476,19 +535,13 @@
  
         function datacheck() {
             var result = { r: false };
-            result.familyId = $_GET["Id"];
+            result.historyId = $_GET["Id"];
+            result.familyId = familyId;
             result.totalPrice = totalPrice;
             result.ganYear = ganyear;
             result.nameList = getTableData();            
             result.r = true;
             return result;
-        }
-
-
-        function checkIsNullOrEmpty(obj) {
-            if (obj == 'undefined' || obj == null || obj == 0 || obj == '')
-                return true;
-            return false;
         }
 
         $(window).bind('beforeunload',function(){

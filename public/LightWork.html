@@ -58,7 +58,7 @@
         var totalLength = 0;
 
         function checkIsNullOrEmpty(obj) {
-            if (obj == 'undefined' || obj == null || obj == 0 || obj == '')
+            if (obj == 'undefined' || obj == null || obj == '')
                 return true;
             return false;
         }
@@ -68,9 +68,9 @@
             var tr_length = $('.table tr').length; //tr 長度
             var j = 0;
             for(var i=0; i < totalLength; i++){
-                var lightIndex = $('#lightType'+i).val();            
+                var lightIndex = $('#lightType'+i).val();                    
                 if (!checkIsNullOrEmpty(lightIndex)) {
-                    var light = lightType[lightIndex];                                
+                    var light = lightType[lightIndex];                                 
                     Tbdata[j] = {name: $('#name'+i).val(), lightId: light.id, 
                     birthday2: $('#birthday2'+i).val(), lightClass: $('#lightClass'+i).val(), zodiac: $('#zodiac'+i).val(), 
                     gan: $('#ganyear'+i).val(), birtime: $('#birtime'+i).val(), price: $('#price'+i).val(), note: $('#note'+i).val()}; 

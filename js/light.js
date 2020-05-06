@@ -139,7 +139,7 @@ router.post('/LightWorkAdd', function (req, res) {
                         }
                         else {
                             connection.release();                    
-                            res.send({ code: 0, msg: "新增成功!" }).end();
+                            res.send({ code: 0, msg: "新增成功!", historyId: historyId}).end();
                         }
                     });
                 }

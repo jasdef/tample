@@ -293,7 +293,7 @@
         $(document).on('click', '#addBtn', addCurrentRow);
         $(document).on('click', '#delBtn', deleteCurrentRow);
         var $_GET = {};        
-
+      
         document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function() {
                 function decode(s) {
                     return decodeURIComponent(s.split("+").join(" "));
@@ -470,7 +470,7 @@
                 dataType: 'json',
                 success: function(msg) {
                     alert(msg.msg);
-                    location.replace(`/LightProcess`);            
+                    location.href=`/PrintLightData?Id=${msg.historyId}&gan=${ganyear}&totalPrice=${accounting.formatNumber(totalPrice)}`;          
                 },
                 error: function(xhr, desc, err) {
                     alert("HTTP Status code:" + xhr.status);

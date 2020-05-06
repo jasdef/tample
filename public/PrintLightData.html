@@ -49,6 +49,93 @@
         resize: vertical;
     }
     </style>
+
+    <style type="text/css">
+.responstable {
+  margin: 1em 0;
+  width: 100%;
+  overflow: hidden;
+  background: #FFF;
+  color: #024457;
+  border-radius: 10px;
+  border: 1px solid #167F92;
+}
+.responstable tr {
+  border: 1px solid #D9E4E6;
+}
+.responstable tr:nth-child(odd) {
+  background-color: #EAF3F3;
+}
+.responstable th {
+  display: none;
+  border: 1px solid #FFF;
+  background-color: #167F92;
+  color: #FFF;
+  padding: 1em;
+}
+.responstable th:first-child {
+  display: table-cell;
+  text-align: center;
+}
+.responstable th:nth-child(2) {
+  display: table-cell;
+}
+.responstable th:nth-child(2) span {
+  display: none;
+}
+.responstable th:nth-child(2):after {
+  content: attr(data-th);
+}
+@media (min-width: 480px) {
+  .responstable th:nth-child(2) span {
+    display: block;
+  }
+  .responstable th:nth-child(2):after {
+    display: none;
+  }
+}
+.responstable td {
+  display: block;
+  word-wrap: break-word;
+  max-width: 7em;
+}
+.responstable td:first-child {
+  display: table-cell;
+  text-align: center;
+  border-right: 1px solid #D9E4E6;
+}
+@media (min-width: 480px) {
+  .responstable td {
+    border: 1px solid #D9E4E6;
+  }
+}
+.responstable th, .responstable td {
+  text-align: left;
+  margin: .5em 1em;
+}
+@media (min-width: 480px) {
+  .responstable th, .responstable td {
+    display: table-cell;
+    padding: 1em;
+  }
+}
+
+body {
+  padding: 0 2em;
+  font-family: Arial, sans-serif;
+  color: #024457;
+  background: #f2f2f2;
+}
+
+h1 {
+  font-family: Verdana;
+  font-weight: normal;
+  color: #024457;
+}
+h1 span {
+  color: #167F92;
+}
+    </style>
 </head>
 <script>
         var nameList = {};        
@@ -146,109 +233,24 @@
 
 
 </script>
-<body class="nav-md">
-    <div class="container body">
-        <div class="main_container">
-            <!--Menu-->
-            <!--Top-->
-            <!-- page content -->
-            <div class="right_col" role="main">
-                <div class="row">
-                    <div class="clearfix"></div>
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="x_panel">
-                                <div class="x_title">
-                                    <h2>列印報表</h2>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="x_content">
-                                    <div class="form-horizontal form-label-left" novalidate>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">電話
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="tel" class="date-picker form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">手機
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="phone" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                       
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">地址
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="address" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">戶長
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="delegate" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="item form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">總金額
-                                            </label>
-                                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="totalPriceText" class="form-control col-md-7 col-xs-12" placeholder="" type="text" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="ln_solid"></div>
-                                        <div class="form-group">
-                                            <div class="col-md-9 col-md-offset-4">
-                                                <button class="btn btn-danger" onclick="history.back()">返回</button>
-                                                <button id="sendEdit" class="btn btn-success">儲存</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 col-sm-12 col-xs-12">
-                            <div class="x_panel">
-                                <div class="x_content">
-                                    <div class="form-horizontal form-label-left" novalidate>
-                                        <div class="item form-group">
-                                            <table id="itemTable" class="table x_content">
-                                                    <tr>
-                                                    <th>快選姓名</th>
-                                                    <th>姓名</th>
-                                                    <th>生肖</th>
-                                                    <th>年份</th>
-                                                    <th>農曆生日</th>
-                                                    <th>生辰</th>
-                                                    <th>燈別</th>
-                                                    <th>沖犯類別</th>
-                                                    <th>金額</th>
-                                                    <th>備註</th>                                                                                                        
-                                                    <th>刪除</th>
-                                                    </tr>
-                                                </table> 
-                                            <button id="addBtn">新增</button>
-                                        </div>                                     
-                                    </div>
-                                </div>
-                            </div>
-                        </div>         
-                    </div>
-                 </div>
-            </div>
-            <!-- /page content -->
-            <!--footer-->
-        </div>
+<body>
+    <div id="itemTable">
+        <table class="responstable">
+                <tr>
+                <th>姓名</th>
+                <th>生肖</th>
+                <th>年份</th>
+                <th>農曆生日</th>
+                <th>生辰</th>
+                <th>燈別</th>
+                <th>沖犯類別</th>
+                <th>金額</th>
+                </tr>
+        </table>                 
     </div>
-    <div id="loading-cover" style="width: 100%; height: 100%; background: rgba(0,0,0,.5); position: fixed; display: none; z-index: 999999; top: 0; left: 0;">
-        <div id="loading-icon" style="width: 85px; height: 65px; margin: -42.5px 0 0 -32.5px; top: 50%; left: 50%; position: fixed;">
-            <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw" style="color: #FFF;"></i>
-        </div>
-    </div>
+        <button onclick="history.back()">返回</button>
+        <button id="print">列印</button>
+
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -259,25 +261,7 @@
     <script src="../vendors/nprogress/nprogress.js"></script>
     <!-- validator -->
     <script src="../vendors/validator/validator.js"></script>
-    <!-- Datatables -->
-    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-    <script src="../vendors/jszip/dist/jszip.min.js"></script>
-    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-    <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/moment/min/moment-duration-format.min.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
     <!-- bootstrap-select -->
     <script src="../vendors/bootstrap-select/js/bootstrap-select.min.js"></script>
     <script src="../vendors/bootstrap-select/js/i18n/defaults-zh_TW.min.js"></script>
@@ -290,11 +274,113 @@
     <script type="text/javascript" src="../vendors/At.js/js/jqueryatwho.min.js"></script>
 
     <script>
-    $(document).ready(function() {
-
-        $(document).on('click', '#addBtn', addCurrentRow);
-        $(document).on('click', '#delBtn', deleteCurrentRow);
+    $(document).ready(function() { 
         var $_GET = {};        
+        var lightClass = ["無","太歲","喪門","五鬼","歲破","白虎","天狗","太陰","死符","病符"];
+        var birTime = ["子時","丑時","寅時","卯時","辰時","巳時","午時","未時","申時","酉時","戌時","亥時"];
+        var tel = "";
+        var phone = "";
+        var address = "";
+        var gan = "";
+        var totalPrice="";
+        $(document).on('click', '#print', printData);
+
+        function printData() {
+        var divToPrint = document.getElementById('itemTable');
+        var html = `<style type="text/css">
+                    .responstable {
+                    margin: 1em 0;
+                    width: 100%;
+                    overflow: hidden;
+                    background: #FFF;
+                    color: #024457;
+                    border-radius: 10px;
+                    border: 1px solid #167F92;
+                    }
+                    .responstable tr {
+                    border: 1px solid #D9E4E6;
+                    }
+                    .responstable tr:nth-child(odd) {
+                    background-color: #EAF3F3;
+                    }
+                    .responstable th {
+                    display: none;
+                    border: 1px solid #FFF;
+                    background-color: #167F92;
+                    color: #FFF;
+                    padding: 1em;
+                    }
+                    .responstable th:first-child {
+                    display: table-cell;
+                    text-align: center;
+                    }
+                    .responstable th:nth-child(2) {
+                    display: table-cell;
+                    }
+                    .responstable th:nth-child(2) span {
+                    display: none;
+                    }
+                    .responstable th:nth-child(2):after {
+                    content: attr(data-th);
+                    }
+                    @media (min-width: 480px) {
+                    .responstable th:nth-child(2) span {
+                        display: block;
+                    }
+                    .responstable th:nth-child(2):after {
+                        display: none;
+                    }
+                    }
+                    .responstable td {
+                    display: block;
+                    word-wrap: break-word;
+                    max-width: 7em;
+                    }
+                    .responstable td:first-child {
+                    display: table-cell;
+                    text-align: center;
+                    border-right: 1px solid #D9E4E6;
+                    }
+                    @media (min-width: 480px) {
+                    .responstable td {
+                        border: 1px solid #D9E4E6;
+                    }
+                    }
+                    .responstable th, .responstable td {
+                    text-align: left;
+                    margin: .5em 1em;
+                    }
+                    @media (min-width: 480px) {
+                    .responstable th, .responstable td {
+                        display: table-cell;
+                        padding: 1em;
+                    }
+                    }
+
+                    body {
+                    padding: 0 2em;
+                    font-family: Arial, sans-serif;
+                    color: #024457;
+                    background: #f2f2f2;
+                    }
+
+                    h1 {
+                    font-family: Verdana;
+                    font-weight: normal;
+                    color: #024457;
+                    }
+                    h1 span {
+                    color: #167F92;
+                    }
+                    </style><h1 align="center">${gan}年春節祈安禮斗法會明細表<h1>`;
+            newWin = window.open("列印");
+            html+=divToPrint.outerHTML+`<font size="4" align="left">住址:${address}</font><br><font size="4" align="left">電話:${tel}</font>
+            <br><font size="4" align="left">手機:${phone}</font><br><font size="4" align="left">總計:${totalPrice}</font>`;
+
+            newWin.document.write(html);
+            newWin.print();
+            newWin.close();
+        }
 
         document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function() {
                 function decode(s) {
@@ -304,101 +390,6 @@
         });
      
         Init();
-
-        function addCurrentRow()
-        {
-            var tr_length = $('.table tr').length - 1; //tr 長度  扣掉head
-            totalLength++;
-            var trcomp=`
-            <tr>   
-            <td width="100px">
-                <select name="${tr_length}" id="quick${tr_length}" onchange="setValue(this)">
-                    <option value="-1" selected="selected">請選擇</option>
-
-                </select>
-            </td>
-            <td width="100px"><input type="text" name="${tr_length}" id="name${tr_length}"  value="" /></td> 
-            <td width="100px"><input name="${tr_length}" id="zodiac${tr_length}" type="text" /></td>
-            <td width="100px"><input name="${tr_length}" id="ganyear${tr_length}" type="text" /></td>
-            <td width="100px"><input name="${tr_length}" id="birthday2${tr_length}" onchange="onprocess(this)" type="text"/></td>
-            <td width="100px">
-                <select name="${tr_length}" id="birtime${tr_length}" name="birtime">
-                　<option value="0" selected="selected">吉時</option>
-                　<option value="1">子時</option>
-                　<option value="2">丑時</option>
-                　<option value="3">寅時</option>
-                　<option value="4">卯時</option>
-                　<option value="5">辰時</option>
-                　<option value="6">巳時</option>
-                　<option value="7">午時</option>
-                　<option value="8">未時</option>
-                　<option value="9">申時</option>
-                　<option value="10">酉時</option>
-                　<option value="11">戌時</option>
-                　<option value="12">亥時</option>
-                </select>
-            </td>
-            <td width="100px">
-                <select name="${tr_length}" id="lightType${tr_length}" onchange="setPrice(this)">
-                    <option value="-1" selected="selected">請選擇</option>
-
-                </select>
-            </td>
-            <td width="100px">
-                <select name="${tr_length}" id="lightClass${tr_length}">
-                    <option value="0" selected="selected">請選擇</option>
-                    <option value="1">太歲</option>
-                    <option value="2">喪門</option>
-                    <option value="3">五鬼</option>
-                    <option value="4">歲破</option>
-                    <option value="5">白虎</option>
-                    <option value="6">天狗</option>
-                    <option value="7">太陰</option>
-                    <option value="8">死符</option>
-                    <option value="9">病符</option>
-                </select>
-            </td>
-            <td width="100px"><input name="${tr_length}" id="price${tr_length}" type="number" oninput="onPriceChange(this)" />
-                <input name="${tr_length}" id="priceText${tr_length}" type="text" disabled/>
-                </td>
-            <td width="100px"><input name="${tr_length}" id="note${tr_length}" type="text" /></td>
-            <td><a id="delBtn"><font color='red'>刪除</sfont></a> </td>
-            </tr>
-            `;
-            $("#itemTable tr:last-child").after(trcomp);
-
-            for (var i = 0; i < members.length; i++) {
-                var member = members[i]; 
-
-                $('#quick'+tr_length).append(
-                        `
-                        <option class="text-center" value=${i}>${member.name}</option>
-                        `
-                );   
-            }
-
-            for (var i = 0; i < lightType.length; i++) {
-                var light = lightType[i]; 
-
-                $('#lightType'+tr_length).append(
-                        `
-                        <option class="text-center" value=${i}>${light.name}</option>
-                        `
-                );   
-            }
-        }
-
-        function deleteCurrentRow()
-        {
-             var isDelete=confirm("真的要刪除嗎？");
-            if(isDelete)
-            {
-                var tr=this.parentNode.parentNode;
-                var tbody=tr.parentNode;
-                tbody.removeChild(tr);
-            }
-            calculate();
-        }
 
         function QuickNotify(message, type) {
             var icon = "";
@@ -423,7 +414,9 @@
 
         function Init() {
             var id = $_GET["Id"];
-                                     
+            console.log($_GET);
+            gan = $_GET["gan"];
+            totalPrice = $_GET["totalPrice"];                    
             $.ajax({
                 type: 'POST',
                 url: "/GetLightData",
@@ -468,90 +461,56 @@
                     console.log(msg);
                     var family = msg.family;
                     members = JSON.parse(family.members);
-                    $('#tel').val(family.tel);
-                    $('#phone').val(family.phone);
-                    $('#address').val(family.address);
-                    $('#delegate').val(family.delegate);  
+                    tel = family.tel;
+                    phone = family.phone;
+                    address = family.address;
+                    // $('#delegate').val(family.delegate);  
                     
                     for (var i = 0; i < nameList.length; i++) {
-                        addCurrentRow();
+                        
                         var member = nameList[i]; 
-                        $('#name'+i).val(member.name);                          
-                        $('#birthday2'+i).val(member.birthday2);
-
+                        var lightName = "";
+                        var lightclass = lightClass[member.lightClass];
+                        var birtime = birTime[member.birtime];
                         for(var j = 0; j < lightType.length; j++) {
                             var l = lightType[j];
                             if (l.id == member.lightId) { //因為存的是ID 用這方式 找index
-                                $('#lightType'+i).val(j);
+                                lightName = l.name;
+                                console.log(l.name);
                                 break;
                             }
                         }
 
-                        $('#lightClass'+i).val(member.lightClass);            
-                        $('#birtime'+i).val(member.birtime);               
-                        $('#zodiac'+i).val(member.zodiac);
-                        $('#ganyear'+i).val(member.gan); 
-                        $('#price'+i).val(member.price); 
-                        $('#note'+i).val(member.note);                        
+                   
                         var priceText = accounting.formatNumber(member.price);         
-                        $('#priceText'+i).val(priceText); 
+    
                         // var temp = member.birthday2.split('-');
                         // var year = temp[0];
                         // var bc = 1911+parseInt(year);
                         // var now = new Date();
                         // var nowYear = now.getFullYear();
                         // var age = nowYear - bc + 1;                           
-                        // $('#age'+i).val(age);    
+                        // $('#age'+i).val(age);   
+                        
+                        var trcomp=`
+                        <tr>   
+                        <td>${member.name}</td> 
+                        <td>${member.zodiac}</td>
+                        <td>${member.gan}</td>
+                        <td>${member.birthday2}</td>
+                        <td>${birtime}</td>
+                        <td>${lightName}</td>
+                        <td>${lightclass}</td>
+                        <td>${priceText}</td>
+                        </tr>
+                        `;
+                        $("#itemTable tr:last-child").after(trcomp);
                     }
 
-                    calculate();
+                   // calculate();
                 }
             });
-        }
-
-        function sendEditData() {
-            $('#loading-cover').fadeIn(100);
-            var checkData = datacheck();
-            if (checkData.r) {
-                $.ajax({
-                type: 'POST',
-                url: "/LightWorkEdit",
-                data: {requestData: JSON.stringify(checkData)},
-                dataType: 'json',
-                success: function(msg) {
-                    alert(msg.msg);
-                    location.replace(`/LightHistory`);            
-                },
-                error: function(xhr, desc, err) {
-                    alert("HTTP Status code:" + xhr.status);
-                    $('#loading-cover').fadeOut(100);
-                }
-                }).done(function() {
-                    $('#loading-cover').fadeOut(100);
-                });
-
-            }            
-        }
- 
-        function datacheck() {
-            var result = { r: false };
-            result.historyId = $_GET["Id"];
-            result.familyId = familyId;
-            result.totalPrice = totalPrice;
-            result.ganYear = ganyear;
-            result.nameList = getTableData();            
-            result.r = true;
-            return result;
-        }
-
-        $(window).bind('beforeunload',function(){
-        return '提示資訊';
-        }
-        );
-
-        $(document).on('click', '#sendEdit', sendEditData);
-      
-
+        }          
     });
     </script>
 </body>

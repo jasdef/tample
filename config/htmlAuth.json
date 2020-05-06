@@ -160,6 +160,13 @@
         "type": "view",
         "htmlpath": "./../public/LightWorkCopy.html"
     },
+    "PrintLightData":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/PrintLightData.html"
+    },
     "PhotoView":
     {
         "autho": "admin",

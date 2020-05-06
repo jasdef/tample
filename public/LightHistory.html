@@ -143,7 +143,9 @@
                     { "defaultContent": 
                         `<div class="btn-group btn-group-sm" style="display: flex;">
                             <button class="btn btn-info" id='edit' title="編輯"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 編輯</button>                            
-                            <button class="btn btn-danger active" id='copy' title="拷貝新增"><i class="fa fa-ban" aria-hidden="true"></i>拷貝新增</button>
+                            <button class="btn btn-success active" id='copy' title="拷貝新增"><i class="fa fa-plus" aria-hidden="true"></i>拷貝新增</button>
+                            <button class="btn btn-warning active" id='print' title="列印"><i class="fa fa-print" aria-hidden="true"></i>列印</button>
+
                         </div>`
                     }               
                 ],
@@ -177,6 +179,9 @@
                     break;
                 case "copy":
                     location.href=`/LightWorkCopy?Id=${data.id}`;
+                    break;
+                case "print":
+                    location.href=`/PrintLightData?Id=${data.id}`;
                     break;
             }
 

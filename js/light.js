@@ -41,6 +41,10 @@ router.get('/LightWorkCopy', function (req, res) {
     common.CreateHtml("LightWorkCopy", req, res);
 });
 
+router.get('/PrintLightData', function (req, res) {
+    common.log(req.session['account'], 'call PrintLightData');
+    common.CreateHtml("PrintLightData", req, res);
+});
 
 router.post('/AddLight', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {

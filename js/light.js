@@ -179,6 +179,40 @@ router.post('/GetLightData', function (req, res) {
     });
 });
 
+router.post('/GetLightRecordTotal', function (req, res) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
+        var requestData = JSON.parse(req.body.requestData);
+        var gan = requestData.gan;
+
+        common.BackendConnection(res, function (err, connection) {
+            if (err) {
+                common.log(res.session['account'], err);
+                throw err;
+            }
+             
+            var dataSelect = "SELECT b.`name`, sum(a.`price`) as total FROM light_record as a inner join light_type as b on a.light_id = b.id where a.gan_year="+gan+" group by a.light_id;";
+   
+            var sql = dataSelect;
+
+            common.log(req.session['account'], sql);
+
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], err);
+                    res.send({error : err});
+                }
+                else {
+            
+                    res.send({ lightType: result });
+                }
+                connection.release();
+                res.end();
+            });
+
+        });        
+    });
+});
+
 router.post('/GetLightHistoryData', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         common.BackendConnection(res, function (err, connection) {

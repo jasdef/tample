@@ -120,12 +120,7 @@
   }
 }
 
-body {
-  padding: 0 2em;
-  font-family: Arial, sans-serif;
-  color: #024457;
-  background: #f2f2f2;
-}
+
 
 h1 {
   font-family: Verdana;
@@ -233,23 +228,55 @@ h1 span {
 
 
 </script>
-<body>
-    <div id="itemTable">
-        <table class="responstable">
-                <tr>
-                <th>姓名</th>
-                <th>生肖</th>
-                <th>年份</th>
-                <th>農曆生日</th>
-                <th>生辰</th>
-                <th>燈別</th>
-                <th>沖犯類別</th>
-                <th>金額</th>
-                </tr>
-        </table>                 
-    </div>
-        <button onclick="history.back()">返回</button>
-        <button id="print">列印</button>
+<body class="nav-md">
+        <div class="container body">
+                <div class="main_container">
+                    <!--Menu-->
+                    <!--Top-->
+                    <!-- page content -->
+                    <div class="right_col" role="main">
+                        <div class="row">
+                            <div class="clearfix"></div>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                        <div class="x_title">
+                                            <h2>列印</h2>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="x_content">
+                                            <div class="form-horizontal form-label-left" id="itemTable" novalidate>
+                                                <table class="responstable">
+                                                        <tr>
+                                                        <th>姓名</th>
+                                                        <th>生肖</th>
+                                                        <th>年份</th>
+                                                        <th>農曆生日</th>
+                                                        <th>生辰</th>
+                                                        <th>燈別</th>
+                                                        <th>沖犯類別</th>
+                                                        <th>金額</th>
+                                                        </tr>
+                                                </table>                 
+                                            </div>
+                                            <button onclick="history.back()">返回</button>
+                                            <button id="print">列印</button>                                                                      
+                                        </div>
+                                    </div>
+                                </div>        
+                            </div>
+                         </div>
+                    </div>
+                    <!-- /page content -->
+                    <!--footer-->
+                </div>
+        </div>
+
+        <div id="loading-cover" style="width: 100%; height: 100%; background: rgba(0,0,0,.5); position: fixed; display: none; z-index: 999999; top: 0; left: 0;">
+                <div id="loading-icon" style="width: 85px; height: 65px; margin: -42.5px 0 0 -32.5px; top: 50%; left: 50%; position: fixed;">
+                    <i class="fa fa-circle-o-notch fa-spin fa-5x fa-fw" style="color: #FFF;"></i>
+                </div>
+            </div>
 
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
@@ -464,6 +491,7 @@ h1 span {
                     tel = family.tel;
                     phone = family.phone;
                     address = family.address;
+
                     // $('#delegate').val(family.delegate);  
                     
                     for (var i = 0; i < nameList.length; i++) {

@@ -160,6 +160,13 @@
         "type": "view",
         "htmlpath": "./../public/LightWorkCopy.html"
     },
+    "LightRecordTotal":
+    {
+        "autho": "admin",
+        "enable": true,
+        "type": "view",
+        "htmlpath": "./../public/LightRecordTotal.html"
+    },
     "PrintLightData":
     {
         "autho": "admin",

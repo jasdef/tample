@@ -41,6 +41,11 @@ router.get('/LightWorkCopy', function (req, res) {
     common.CreateHtml("LightWorkCopy", req, res);
 });
 
+router.get('/LightRecordTotal', function (req, res) {
+    common.log(req.session['account'], 'call LightRecordTotal');
+    common.CreateHtml("LightRecordTotal", req, res);
+});
+
 router.get('/PrintLightData', function (req, res) {
     common.log(req.session['account'], 'call PrintLightData');
     common.CreateHtml("PrintLightData", req, res);
@@ -183,14 +188,18 @@ router.post('/GetLightRecordTotal', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         var requestData = JSON.parse(req.body.requestData);
         var gan = requestData.gan;
-
+        var lightType = requestData.lightType;
         common.BackendConnection(res, function (err, connection) {
             if (err) {
                 common.log(res.session['account'], err);
                 throw err;
             }
              
-            var dataSelect = "SELECT b.`name`, sum(a.`price`) as total FROM light_record as a inner join light_type as b on a.light_id = b.id where a.gan_year="+gan+" group by a.light_id;";
+            var dataSelect = "SELECT gan_year, count(b.name) as count, b.`name`, sum(a.`price`) as total FROM light_record as a inner join light_type as b on a.light_id = b.id where a.gan_year="+gan+" and is_del=0 group by a.light_id;";
+                        
+            if (lightType != -1) {
+                dataSelect = "SELECT gan_year, count(b.name) as count, b.`name`, sum(a.`price`) as total FROM light_record as a inner join light_type as b on a.light_id = b.id where a.gan_year="+gan+" and light_id="+lightType+" and is_del=0 group by a.light_id;";
+            }
    
             var sql = dataSelect;
 
@@ -203,7 +212,7 @@ router.post('/GetLightRecordTotal', function (req, res) {
                 }
                 else {
             
-                    res.send({ lightType: result });
+                    res.send({ data: result });
                 }
                 connection.release();
                 res.end();

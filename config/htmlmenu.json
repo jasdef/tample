@@ -53,6 +53,12 @@
         "enable": true,
         "child":
         {
+            "燈別統計查詢":
+            {
+                "enable": true,
+                "autho": "admin",
+                "href": "LightRecordTotal"
+            },            
             "操作歷史紀錄":
             {
                 "enable": true,

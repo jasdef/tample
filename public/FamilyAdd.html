@@ -87,7 +87,7 @@
                 var o = '';
                 if (obj.id === "birthday1"+obj.name) {
                     o = LunarCalendar.solarToLunar(bc, month, date);
-                    $('#birthday2'+obj.name).val(o.lunarYear-1911+'-'+o.lunarMonth+'-'+o.lunarDay);
+                    $('#birthday2'+obj.name).val(o.lunarYear-1911+'-'+o.lunarMonth+'-'+Math.round(o.lunarDay));
                 }
                 else {
                     o = LunarCalendar.lunarToSolar(bc, month, date);

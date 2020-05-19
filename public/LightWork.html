@@ -77,7 +77,7 @@
                     j++
                 }               
              }
-             Tbdata["length"] = tr_length-1;
+             Tbdata["length"] = j;
              console.log(Tbdata); 
              return Tbdata;     
         }
@@ -367,7 +367,6 @@
 
             for (var i = 0; i < members.length; i++) {
                 var member = members[i]; 
-
                 $('#quick'+tr_length).append(
                         `
                         <option class="text-center" value=${i}>${member.name}</option>

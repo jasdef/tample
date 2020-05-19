@@ -296,8 +296,9 @@ router.post('/GetLightHistory', function (req, res) {
                 throw err;
             }
             
-            var dataSelect = "select * from light_history;";
-            var countSelect = "select COUNT(*) as count from light_history;";
+            var familyID = req.body.Id;
+            var dataSelect = "select * from light_history where family_id="+familyID+";";
+            var countSelect = "select COUNT(*) as count from light_history where family_id="+familyID+";";
 
    
             var sql = countSelect + dataSelect;

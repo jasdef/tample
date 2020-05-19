@@ -119,12 +119,19 @@
     <script src="../build/js/custom.min.js"></script>
     <script>
     $(document).ready(function() {
+        var $_GET = {};        
+        document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function() {
+                function decode(s) {
+                    return decodeURIComponent(s.split("+").join(" "));
+                }
+                $_GET[decode(arguments[1])] = decode(arguments[2]);
+        });
 
         var table = $('#datatable').DataTable();
         search();
 
         function search() {
-
+            var id = $_GET["Id"];
             if (typeof table !== "undefined") {
                 table.destroy();
             }
@@ -157,7 +164,7 @@
                 "ajax": {
                     "url": "/GetLightHistory",
                     "type": "POST",
-                    //"data": { requestData: JSON.stringify(requestData) },
+                    "data": { Id: id },
                     "cache": "false",
                     "async": "true",
                     "dataType": 'json'

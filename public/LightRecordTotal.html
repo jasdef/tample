@@ -167,14 +167,14 @@
                                 </div>
                                 <div class="x_content">
                                     <div class="form-horizontal form-label-left" id="itemTable" novalidate>
-                                        <table class="responstable">
-                                                <tr>
-                                                <th>年度</th>
-                                                <th>燈別</th>
-                                                <th>數量</th>
-                                                <th>總金額</th>      
-                                                </tr>
-                                        </table>                 
+                                      <table class="responstable">
+                                          <tr>
+                                          <th>年度</th>
+                                          <th>燈別</th>
+                                          <th>數量</th>
+                                          <th>總金額</th>      
+                                          </tr>
+                                      </table>
                                     </div>
                                 </div>
                             </div>
@@ -274,6 +274,14 @@
                         dataType: 'json',
                         success: function(msg) {
                             var result = msg.data;     
+                            $("#itemTable").html(`                                        <table class="responstable">
+                                                <tr>
+                                                <th>年度</th>
+                                                <th>燈別</th>
+                                                <th>數量</th>
+                                                <th>總金額</th>      
+                                                </tr>
+                                        </table>  `);
                             for (var i = 0; i < result.length; i++) {
                                 var r = result[i];
                                 var trcomp=`

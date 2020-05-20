@@ -98,6 +98,11 @@
                 $('#zodiac'+obj.name).val(o.zodiac);
                 $('#ganyear'+obj.name).val(o.GanZhiYear);
         }
+
+        function pasteAddr(obj) {
+            console.log("yes");
+            $('#address').val(obj.value);
+        }
 </script>
 <body class="nav-md">
     <div class="container body">
@@ -131,7 +136,17 @@
                                                 <input id="phone" class="form-control col-md-7 col-xs-12" placeholder="" type="text">
                                             </div>
                                         </div>
-                                       
+                                        <div class="item form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12">快選地址
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <select name="quickAddr" id="quickAddr" onchange=pasteAddr(this)>
+                                                    　<option value="" selected="selected">請選擇</option>
+                                                    　<option value="苗栗縣大湖鄉">苗栗縣大湖鄉</option>
+                                                    　<option value="苗栗縣富興村">苗栗縣富興村</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="item form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12">地址
                                             </label>

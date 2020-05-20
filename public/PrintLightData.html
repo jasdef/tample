@@ -174,6 +174,7 @@ h1 span {
                                                         <th>年份</th>
                                                         <th>農曆生日</th>
                                                         <th>生辰</th>
+                                                        <th>歲數</th>
                                                         <th>燈別</th>
                                                         <th>沖犯類別</th>
                                                         <th>金額</th>
@@ -433,13 +434,12 @@ h1 span {
                    
                         var priceText = accounting.formatNumber(member.price);         
     
-                        // var temp = member.birthday2.split('-');
-                        // var year = temp[0];
-                        // var bc = 1911+parseInt(year);
-                        // var now = new Date();
-                        // var nowYear = now.getFullYear();
-                        // var age = nowYear - bc + 1;                           
-                        // $('#age'+i).val(age);   
+                        var temp = member.birthday2.split('-');
+                        var year = temp[0];
+                        var bc = 1911+parseInt(year);
+                        var now = new Date();
+                        var nowYear = now.getFullYear();
+                        var age = nowYear - bc + 1;                                               
                         
                         var trcomp=`
                         <tr>   
@@ -448,6 +448,7 @@ h1 span {
                         <td>${member.gan}</td>
                         <td>${member.birthday2}</td>
                         <td>${birtime}</td>
+                        <td>${age}</td>
                         <td>${lightName}</td>
                         <td>${lightclass}</td>
                         <td>${priceText}</td>

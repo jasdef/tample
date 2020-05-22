@@ -273,27 +273,66 @@
                         async: true,
                         dataType: 'json',
                         success: function(msg) {
-                            var result = msg.data;     
-                            $("#itemTable").html(`                                        <table class="responstable">
+                            var result = msg.data;  
+                              
+                            var trcomp=`<table class="responstable">
                                                 <tr>
                                                 <th>年度</th>
                                                 <th>燈別</th>
                                                 <th>數量</th>
                                                 <th>總金額</th>      
                                                 </tr>
-                                        </table>  `);
+                                       `;
+                            
+                            var pageCount = parseInt(result.length/10);
+
                             for (var i = 0; i < result.length; i++) {
                                 var r = result[i];
-                                var trcomp=`
-                                <tr>   
-                                <td>${r.gan_year}</td> 
-                                <td>${r.name}</td>
-                                <td>${r.count}</td>
-                                <td>${r.total}</td>
-                                </tr>
-                                `;
-                                $("#itemTable tr:last-child").after(trcomp);   
+                                
+                                if ((i+1) % 10 == 0) {
+                                  if (pageCount > 0) {                                    
+                                      trcomp +=`    
+                                      </table>    
+                                      <p style="page-break-after:always"></p>
+                                      <table class="responstable">`; 
+                                      pageCount--;
+                                  }
+                                  else {
+                                      trcomp +=`    
+                                      </table>    
+                                      <table class="responstable">`;
+                                  }
+                                  
+                                  trcomp +=`
+                                  <tr>
+                                  <th>年度</th>
+                                  <th>燈別</th>
+                                  <th>數量</th>
+                                  <th>總金額</th>      
+                                  </tr>
+                                  <tr>   
+                                  <td>${r.gan_year}</td> 
+                                  <td>${r.name}</td>
+                                  <td>${r.count}</td>
+                                  <td>${r.total}</td>
+                                  </tr>
+                                  `;
+                                
+                                }
+                                else {
+                                  trcomp +=`     
+                                  <tr>   
+                                  <td>${r.gan_year}</td> 
+                                  <td>${r.name}</td>
+                                  <td>${r.count}</td>
+                                  <td>${r.total}</td>
+                                  </tr>
+                                  `;
+                                }
+                              
                             }
+                            trcomp+=`</table>`
+                            $("#itemTable").html(trcomp);  
                         }
                     });           
                 }

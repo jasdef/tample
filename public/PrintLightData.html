@@ -120,6 +120,9 @@
   }
 }
 
+.printTable {
+ page-break-after: always;
+ }
 
 
 h1 {
@@ -130,7 +133,10 @@ h1 {
 h1 span {
   color: #167F92;
 }
-    </style>
+
+
+</style>
+
 </head>
 <script>
         var nameList = {};        
@@ -167,19 +173,7 @@ h1 span {
                                         </div>
                                         <div class="x_content">
                                             <div class="form-horizontal form-label-left" id="itemTable" novalidate>
-                                                <table class="responstable">
-                                                        <tr>
-                                                        <th>姓名</th>
-                                                        <th>生肖</th>
-                                                        <th>年份</th>
-                                                        <th>農曆生日</th>
-                                                        <th>生辰</th>
-                                                        <th>歲數</th>
-                                                        <th>燈別</th>
-                                                        <th>沖犯類別</th>
-                                                        <th>金額</th>
-                                                        </tr>
-                                                </table>                 
+               
                                             </div>
                                             <button onclick="history.back()">返回</button>
                                             <button id="print">列印</button>                                                                      
@@ -321,6 +315,9 @@ h1 span {
                     h1 span {
                     color: #031012;
                     }
+                    .printTable {
+ page-break-after: always;
+ }
                     </style><h1 align="center">${gan}年春節祈安禮斗法會明細表<h1>`;
             newWin = window.open("列印");
             html+=divToPrint.outerHTML+`<font size="4" align="left">住址:${address}</font><br><font size="4" align="left">電話:${tel}</font>
@@ -413,9 +410,22 @@ h1 span {
                     tel = family.tel;
                     phone = family.phone;
                     address = family.address;
-
+                    var trcomp = `<table class="responstable">
+                                                        <tr>
+                                                        <th>姓名</th>
+                                                        <th>生肖</th>
+                                                        <th>年份</th>
+                                                        <th>農曆生日</th>
+                                                        <th>生辰</th>
+                                                        <th>歲數</th>
+                                                        <th>燈別</th>
+                                                        <th>沖犯類別</th>
+                                                        <th>金額</th>
+                                                        </tr>
+                                                 `;
                     // $('#delegate').val(family.delegate);  
-                    
+                    var pageCount = parseInt(nameList.length/10);
+                                                        console.log(pageCount);
                     for (var i = 0; i < nameList.length; i++) {
                         
                         var member = nameList[i]; 
@@ -439,23 +449,68 @@ h1 span {
                         var bc = 1911+parseInt(year);
                         var now = new Date();
                         var nowYear = now.getFullYear();
-                        var age = nowYear - bc + 1;                                               
-                        
-                        var trcomp=`
-                        <tr>   
-                        <td>${member.name}</td> 
-                        <td>${member.zodiac}</td>
-                        <td>${member.gan}</td>
-                        <td>${member.birthday2}</td>
-                        <td>${birtime}</td>
-                        <td>${age}</td>
-                        <td>${lightName}</td>
-                        <td>${lightclass}</td>
-                        <td>${priceText}</td>
-                        </tr>
-                        `;
-                        $("#itemTable tr:last-child").after(trcomp);
+                        var age = nowYear - bc + 1;                          
+                    
+                        if ((i+1) % 10 == 0) {
+                            if (pageCount > 0) {
+                                console.log("yes");
+                                trcomp +=`    
+                                </table>    
+                                <p style="page-break-after:always"></p>
+                                <table class="responstable">`; 
+                                pageCount--;
+                            }
+                            else {
+                                trcomp +=`    
+                                </table>    
+                                <table class="responstable">`;
+                            }
+
+                            trcomp +=`                               
+                            <tr>
+                            <th>姓名</th>
+                            <th>生肖</th>
+                            <th>年份</th>
+                            <th>農曆生日</th>
+                            <th>生辰</th>
+                            <th>歲數</th>
+                            <th>燈別</th>
+                            <th>沖犯類別</th>
+                            <th>金額</th>
+                            </tr>
+                            <tr>
+                            <td>${member.name}</td> 
+                            <td>${member.zodiac}</td>
+                            <td>${member.gan}</td>
+                            <td>${member.birthday2}</td>
+                            <td>${birtime}</td>
+                            <td>${age}</td>
+                            <td>${lightName}</td>
+                            <td>${lightclass}</td>
+                            <td>${priceText}</td>
+                            </tr>
+                            `;
+                        }
+                        else {
+                            trcomp +=`
+                            <tr>   
+                            <td>${member.name}</td> 
+                            <td>${member.zodiac}</td>
+                            <td>${member.gan}</td>
+                            <td>${member.birthday2}</td>
+                            <td>${birtime}</td>
+                            <td>${age}</td>
+                            <td>${lightName}</td>
+                            <td>${lightclass}</td>
+                            <td>${priceText}</td>
+                            </tr>
+                            `;
+                        }
+
+
                     }
+                    trcomp+=`</table>`
+                    $("#itemTable").html(trcomp);
 
                    // calculate();
                 }

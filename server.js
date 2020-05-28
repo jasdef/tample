@@ -56,9 +56,7 @@ app.get('/*', function (req, res) {
     res.sendFile(path.join(__dirname + '/' + req.url).split("?")[0]);
 });
 
-https.createServer(options, app).listen(listenPort,'0.0.0.0', function () {
-
-
+app.listen(listenPort,'0.0.0.0', function () {
     console.log("Express server listening on port " + listenPort);
     fs.readFile(__dirname + '/package.json', 'utf8', function (err, data) {
         console.log("version: " + JSON.parse(data).version);

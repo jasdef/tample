@@ -108,6 +108,29 @@ router.post('/LightWorkEdit', function (req, res) {
     });
 });
 
+router.post('/LightHistoryDel', function (req, res) {
+    common.CreateHtml("Light_Transfer", req, res, function (err) {
+        common.BackendConnection(res, function (err, connection) {
+            var Id = connection.escape(req.body.Id);
+            var sql = "update light_history set is_del=1 where id="+Id+";";         
+            sql += "update light_record set is_del=1 where history_id="+Id+";";
+            
+            common.log(req.session['account'], sql);
+            connection.query(sql, function (error, result, fields) {
+                if (error) {
+                    common.log(req.session['account'], error);
+                    connection.release();                    
+                    res.send({ code: -1, msg: "刪除失敗", err: error }).end();
+                }
+                else {                    
+                    connection.release();                    
+                    res.send({ code: 0, msg: "刪除成功!" }).end();
+                }
+            });
+        });
+    });
+});
+
 router.post('/LightWorkAdd', function (req, res) {
     common.CreateHtml("Light_Transfer", req, res, function (err) {
         var requestData = JSON.parse(req.body.requestData);
@@ -297,8 +320,8 @@ router.post('/GetLightHistory', function (req, res) {
             }
             
             var familyID = req.body.Id;
-            var dataSelect = "select * from light_history where family_id="+familyID+";";
-            var countSelect = "select COUNT(*) as count from light_history where family_id="+familyID+";";
+            var dataSelect = "select * from light_history where is_del=0 and family_id="+familyID+";";
+            var countSelect = "select COUNT(*) as count from light_history where is_del=0 and family_id="+familyID+";";
 
    
             var sql = countSelect + dataSelect;

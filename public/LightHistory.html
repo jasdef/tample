@@ -130,6 +130,23 @@
         var table = $('#datatable').DataTable();
         search();
 
+        function DeleteHistory(id) {
+            $.ajax({
+                type: 'POST',
+                url: "/LightHistoryDel",
+                data: { Id: id },
+                cache: false,
+                async: true,
+                dataType: 'json',
+                success: function(msg) {
+                    if (msg.code == -1) { msg.msg } else {
+                        alert(msg.msg);
+                        search();
+                    }
+                }
+            });
+        }
+
         function search() {
             var id = $_GET["Id"];
             if (typeof table !== "undefined") {
@@ -153,7 +170,7 @@
                             <button class="btn btn-info" id='edit' title="編輯"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 編輯</button>                            
                             <button class="btn btn-success active" id='copy' title="拷貝新增"><i class="fa fa-plus" aria-hidden="true"></i>拷貝新增</button>
                             <button class="btn btn-warning active" id='print' title="列印"><i class="fa fa-print" aria-hidden="true"></i>列印</button>
-
+                            <button class="btn btn-danger active" id='del' title="刪除"><i class="fa fa-ban" aria-hidden="true"></i>刪除</button>
                         </div>`
                     }               
                 ],
@@ -191,6 +208,11 @@
                     break;
                 case "print":
                     location.href=`/PrintLightData?Id=${data.id}&gan=${data.gan_year}&totalPrice=${accounting.formatNumber(data.total_price)}`;
+                    break;
+                case "del":
+                if (confirm("確定刪除嗎?")) {                      
+                        DeleteHistory(data.id);
+                    }
                     break;
             }
 
